@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { createPortal } from "react-dom"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence, MotionConfig } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { X } from "lucide-react"
 
@@ -59,10 +59,12 @@ export function Gallery({ children }: { children: React.ReactNode }) {
   }, [selectedImage])
 
   return (
-    <GalleryContext.Provider value={{ selectedImage, setSelectedImage }}>
-      {children}
-      <GalleryModal />
-    </GalleryContext.Provider>
+    <MotionConfig reducedMotion="user">
+      <GalleryContext.Provider value={{ selectedImage, setSelectedImage }}>
+        {children}
+        <GalleryModal />
+      </GalleryContext.Provider>
+    </MotionConfig>
   )
 }
 
@@ -110,7 +112,7 @@ export function GalleryImage({
       whileHover="hover"
       whileTap="tap"
       className={cn(
-        "relative mb-4 break-inside-avoid cursor-zoom-in rounded-xl overflow-hidden",
+        "relative mb-4 break-inside-avoid cursor-zoom-in overflow-hidden",
         className
       )}
       onClick={() => context.setSelectedImage({ id, src, alt })}
@@ -119,7 +121,7 @@ export function GalleryImage({
         layoutId={`image-${id}`}
         src={src}
         alt={alt || "Gallery Image"}
-        className="w-full h-auto object-cover rounded-xl"
+        className="w-full h-auto object-cover"
         variants={{
           hover: { scale: 0.98 },
           tap: { scale: 0.95 },
@@ -134,7 +136,7 @@ export function GalleryImage({
           tap: { opacity: 1 },
         }}
         initial={{ opacity: 0 }}
-        className="absolute inset-0 bg-black/10 pointer-events-none rounded-xl"
+        className="absolute inset-0 bg-bg/10 pointer-events-none"
         transition={{ duration: 0.2 }}
       />
     </motion.div>
@@ -166,7 +168,7 @@ function GalleryModal() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="absolute inset-0 bg-black/80 backdrop-blur-2xl"
+            className="absolute inset-0 bg-bg/95"
             onClick={() => setSelectedImage(null)}
           />
 
@@ -192,7 +194,7 @@ function GalleryModal() {
               layoutId={`image-${selectedImage.id}`}
               src={selectedImage.src}
               alt={selectedImage.alt || "Selected gallery image"}
-              className="w-auto h-auto max-w-[95vw] max-h-[90vh] rounded-xl shadow-2xl object-contain will-change-transform"
+              className="w-auto h-auto max-w-[95vw] max-h-[90vh] rounded-sm object-contain will-change-transform"
               draggable={false} // Prevent native drag to allow framer-motion drag
               transition={spring}
             />
@@ -204,7 +206,7 @@ function GalleryModal() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ delay: 0.1, duration: 0.2 }}
-            className="absolute top-6 right-6 z-50 p-2.5 bg-white/10 text-white rounded-full backdrop-blur-md hover:bg-white/20 transition-colors"
+            className="absolute top-6 right-6 z-50 p-2.5 bg-surface text-text border border-control hover:border-accent hover:text-accent transition-colors duration-150"
             onClick={() => setSelectedImage(null)}
             aria-label="Close gallery"
           >

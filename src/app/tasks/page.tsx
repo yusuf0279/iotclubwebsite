@@ -83,13 +83,13 @@ const ADMIN_PASSWORD = 'admin123';
    ========================================================= */
 
 const ADMIN_TABS = [
-  'ALL',
-  'General',
-  'Technical',
-  'Activities',
-  'Public Relations',
-  'Media',
-  'Executives',
+ 'ALL',
+ 'General',
+ 'Technical',
+ 'Activities',
+ 'Public Relations',
+ 'Media',
+ 'Executives',
 ];
 
 /* =========================================================
@@ -106,7 +106,7 @@ const EVENTS: CalendarEvent[] = [
     endTime: '16:00',
     location: 'Main Building Rotunda',
     description:
-      'Come visit the IoT Club booth for interactive challenges, robots, trivia, prizes, and more.',
+ 'Come visit the IoT Club booth for interactive challenges, robots, trivia, prizes, and more.',
     type: 'Club',
   },
 
@@ -118,7 +118,7 @@ const EVENTS: CalendarEvent[] = [
     endTime: '19:00',
     location: 'ESB-1043',
     description:
-      'Hands-on IoT workshop for club members.',
+ 'Hands-on IoT workshop for club members.',
     type: 'Workshop',
   },
 
@@ -131,7 +131,7 @@ const EVENTS: CalendarEvent[] = [
     endTime: '19:00',
     location: 'Main Building',
     description:
-      'Collaboration with IEEE SSCS in "INSPIRE 26 ',
+ 'Collaboration with IEEE SSCS in "INSPIRE 26 ',
     type: 'Hackathon',
   },
 
@@ -143,7 +143,7 @@ const EVENTS: CalendarEvent[] = [
     endTime: '19:00',
     location: 'Football Field',
     description:
-      'Collaboration between different clubs',
+ 'Collaboration between different clubs',
     type: 'Social',
   },
 
@@ -155,7 +155,7 @@ const EVENTS: CalendarEvent[] = [
     endTime: '19:00',
     location: 'Football Field',
     description:
-      'Collaboration between different clubs',
+ 'Collaboration between different clubs',
     type: 'Social',
   },
 
@@ -167,7 +167,7 @@ const EVENTS: CalendarEvent[] = [
     endTime: '18:00',
     location: 'ESB',
     description:
-      'Hands-on IoT workshop for club members.',
+ 'Hands-on IoT workshop for club members.',
     type: 'Workshop',
   },
 
@@ -179,7 +179,7 @@ const EVENTS: CalendarEvent[] = [
     endTime: '18:00',
     location: 'Main Bldg',
     description:
-      'hackathon event',
+ 'hackathon event',
     type: 'Competition',
   },
 
@@ -191,7 +191,7 @@ const EVENTS: CalendarEvent[] = [
     endTime: '18:00',
     location: '??',
     description:
-      'Visit to industry',
+ 'Visit to industry',
     type: 'Other',
   },
 ];
@@ -228,6 +228,11 @@ function getDateKey(date: Date) {
   return `${year}-${month}-${day}`;
 }
 
+const MONTH_NAMES = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+];
+
 function getTodayKey() {
   return getDateKey(new Date());
 }
@@ -248,11 +253,11 @@ function formatDate(
   }
 
   const date = new Date(
-    `${dateString}T00:00:00`
+ `${dateString}T00:00:00`
   );
 
   return date.toLocaleDateString(
-    'en-US',
+ 'en-US',
     {
       month: 'short',
       day: 'numeric',
@@ -285,25 +290,25 @@ function getEventColor(
 ) {
   switch (type) {
     case 'Workshop':
-      return 'bg-cyan-500/15 border-cyan-500/30 text-cyan-300';
+      return 'bg-accent/15 border-accent/30 text-accent';
 
     case 'Meeting':
-      return 'bg-purple-500/15 border-purple-500/30 text-purple-300';
+      return 'bg-surface-2 border-control text-text';
 
     case 'Competition':
-      return 'bg-orange-500/15 border-orange-500/30 text-orange-300';
+      return 'bg-ember/15 border-ember/30 text-ember';
 
     case 'Social':
-      return 'bg-pink-500/15 border-pink-500/30 text-pink-300';
+      return 'bg-surface-2 border-control text-muted';
 
     case 'Deadline':
-      return 'bg-red-500/15 border-red-500/30 text-red-300';
+      return 'bg-danger/10 border-danger/30 text-danger';
 
     case 'Club':
-      return 'bg-blue-500/15 border-blue-500/30 text-blue-300';
+      return 'bg-text/10 border-text/30 text-text';
 
     default:
-      return 'bg-slate-500/15 border-slate-500/30 text-slate-300';
+      return 'bg-surface-2 border-control text-text';
   }
 }
 
@@ -314,16 +319,16 @@ function getPriorityColor(
     priority?.toLowerCase()
   ) {
     case 'high':
-      return 'text-red-400 bg-red-500/10 border-red-500/20';
+      return 'text-danger bg-danger/10 border-danger/30';
 
     case 'medium':
-      return 'text-yellow-400 bg-yellow-500/10 border-yellow-500/20';
+      return 'text-ember bg-ember/10 border-ember/20';
 
     case 'low':
-      return 'text-green-400 bg-green-500/10 border-green-500/20';
+      return 'text-accent bg-accent/10 border-accent/30';
 
     default:
-      return 'text-slate-400 bg-slate-500/10 border-slate-500/20';
+      return 'text-muted bg-surface-2 border-control';
   }
 }
 
@@ -359,7 +364,7 @@ export default function HomePage() {
 
   const [view, setView] =
     useState<'calendar' | 'tasks'>(
-      'calendar'
+ 'calendar'
     );
 
   /* =======================================================
@@ -484,7 +489,7 @@ export default function HomePage() {
   useEffect(() => {
     const savedAdmin =
       localStorage.getItem(
-        'iot_admin_logged_in'
+ 'iot_admin_logged_in'
       );
 
     if (savedAdmin === 'true') {
@@ -505,7 +510,7 @@ export default function HomePage() {
         .from('tasks')
         .select('*')
         .order(
-          'dueDate',
+ 'dueDate',
           {
             ascending: true,
           }
@@ -513,7 +518,7 @@ export default function HomePage() {
 
       if (error) {
         console.error(
-          'Error loading tasks:',
+ 'Error loading tasks:',
           error
         );
 
@@ -535,10 +540,10 @@ export default function HomePage() {
     const channel =
       supabase
         .channel(
-          'public-task-sync'
+ 'public-task-sync'
         )
         .on(
-          'postgres_changes',
+ 'postgres_changes',
           {
             event: '*',
             schema: 'public',
@@ -571,8 +576,8 @@ export default function HomePage() {
       setIsAdmin(true);
 
       localStorage.setItem(
-        'iot_admin_logged_in',
-        'true'
+ 'iot_admin_logged_in',
+ 'true'
       );
 
       setUsername('');
@@ -584,7 +589,7 @@ export default function HomePage() {
     }
 
     setLoginError(
-      'Invalid username or password.'
+ 'Invalid username or password.'
     );
   }
 
@@ -596,7 +601,7 @@ export default function HomePage() {
     setIsAdmin(false);
 
     localStorage.removeItem(
-      'iot_admin_logged_in'
+ 'iot_admin_logged_in'
     );
 
     setShowLogin(false);
@@ -646,7 +651,7 @@ export default function HomePage() {
       member.img.trim()
         .length > 1 &&
       member.img !==
-        '/team/default_0.webp'
+ '/team/default_0.webp'
     ) {
       return member.img;
     }
@@ -704,7 +709,7 @@ export default function HomePage() {
             updatedChecklist,
         })
         .eq(
-          'id',
+ 'id',
           taskId
         );
 
@@ -742,7 +747,7 @@ export default function HomePage() {
           status: 'review',
         })
         .eq(
-          'id',
+ 'id',
           taskId
         );
 
@@ -778,7 +783,7 @@ export default function HomePage() {
           status: 'done',
         })
         .eq(
-          'id',
+ 'id',
           taskId
         );
 
@@ -814,7 +819,7 @@ export default function HomePage() {
           status: 'todo',
         })
         .eq(
-          'id',
+ 'id',
           taskId
         );
 
@@ -844,7 +849,7 @@ export default function HomePage() {
         .from('tasks')
         .delete()
         .eq(
-          'id',
+ 'id',
           taskId
         );
 
@@ -896,7 +901,7 @@ export default function HomePage() {
     const newTask: Task = {
       id:
         typeof crypto !==
-          'undefined' &&
+ 'undefined' &&
         crypto.randomUUID
           ? crypto.randomUUID()
           : `task_${Date.now()}`,
@@ -937,7 +942,7 @@ export default function HomePage() {
 
     if (error) {
       console.error(
-        'Error creating task:',
+ 'Error creating task:',
         error
       );
 
@@ -953,13 +958,13 @@ export default function HomePage() {
 
     setNewTaskTitle('');
     setNewTaskCategory(
-      'General'
+ 'General'
     );
     setNewTaskAssignee('');
     setNewTaskDueDate('');
     setNewTaskPoints('10');
     setNewTaskPriority(
-      'Medium'
+ 'Medium'
     );
     setNewTaskChecklist('');
 
@@ -980,7 +985,7 @@ export default function HomePage() {
 
       if (
         selectedAdminTab ===
-        'ALL'
+ 'ALL'
       ) {
         return tasks;
       }
@@ -1006,9 +1011,9 @@ export default function HomePage() {
         visibleTasks.filter(
           (task) =>
             task.status ===
-              'todo' ||
+ 'todo' ||
             task.status ===
-              'in_progress'
+ 'in_progress'
         ),
       [visibleTasks]
     );
@@ -1019,7 +1024,7 @@ export default function HomePage() {
         visibleTasks.filter(
           (task) =>
             task.status ===
-            'review'
+ 'review'
         ),
       [visibleTasks]
     );
@@ -1030,7 +1035,7 @@ export default function HomePage() {
         visibleTasks.filter(
           (task) =>
             task.status ===
-            'done'
+ 'done'
         ),
       [visibleTasks]
     );
@@ -1049,7 +1054,7 @@ export default function HomePage() {
                 task.assigneeId ===
                   member.id &&
                 task.status ===
-                  'done'
+ 'done'
             );
 
           const totalPoints =
@@ -1184,7 +1189,7 @@ export default function HomePage() {
 
   const monthTitle =
     currentDate.toLocaleDateString(
-      'en-US',
+ 'en-US',
       {
         month: 'long',
         year: 'numeric',
@@ -1255,6 +1260,12 @@ export default function HomePage() {
     );
   }
 
+  const todayKeyForHero = getTodayKey();
+  const upcomingEvents = [...EVENTS]
+    .filter((event) => (event.endDate ?? event.date) >= todayKeyForHero)
+    .sort((a, b) => a.date.localeCompare(b.date))
+    .slice(0, 3);
+
   /* =======================================================
      RENDER
      ======================================================= */
@@ -1262,12 +1273,39 @@ export default function HomePage() {
   return (
 
     
-<main className="min-h-screen bg-[#020617] pt-20 text-white lg:pt-24">
+<main className="min-h-screen bg-bg text-text">
+      {/* HERO: the next events from the club calendar, as large dates */}
+      <section aria-labelledby="tasks-title" className="mx-auto max-w-[1600px] px-3 pb-12 pt-10 sm:px-6 lg:px-8 lg:pt-14">
+        <h1 id="tasks-title" className="text-[clamp(56px,11vw,168px)] leading-[0.9] text-text">
+          Calendar and tasks
+        </h1>
+        {upcomingEvents.length > 0 && (
+          <ol className="mt-10 grid gap-8 md:grid-cols-3">
+            {upcomingEvents.map((event) => (
+              <li key={event.id}>
+                <p className="font-display text-[clamp(88px,13vw,200px)] font-extrabold leading-[0.85] text-ember">
+                  {Number(event.date.slice(8, 10))}
+                </p>
+                <p className="mt-2 text-[16px] text-muted">
+                  {MONTH_NAMES[Number(event.date.slice(5, 7)) - 1]} {event.date.slice(0, 4)}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setSelectedEvent(event)}
+                  className="mt-2 text-left font-display text-[clamp(28px,3vw,44px)] font-extrabold uppercase leading-[1] text-text hover:text-accent"
+                >
+                  {event.title}
+                </button>
+              </li>
+            ))}
+          </ol>
+        )}
+      </section>
       {/* =====================================================
     CALENDAR / TASK CONTROLS
     ===================================================== */}
 
-<div className="border-b border-slate-800 bg-slate-950/60 px-3 py-3 sm:px-6 lg:px-8">
+<div className="border-b border-divider bg-bg px-3 py-3 sm:px-6 lg:px-8">
   <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-3">
 
     {/* Left side */}
@@ -1275,10 +1313,10 @@ export default function HomePage() {
 
       <button
         onClick={() => setView('calendar')}
-        className={`rounded-lg border px-3 py-2 text-xs font-semibold transition sm:px-4 sm:text-sm ${
+        className={`rounded-none border px-3 py-2 text-[14px] font-semibold transition sm:px-4 sm:text-[16px] ${
           view === 'calendar'
-            ? 'border-cyan-500/40 bg-cyan-500/10 text-cyan-300'
-            : 'border-slate-700 bg-slate-900 text-slate-300 hover:border-cyan-500/50 hover:text-white'
+            ? 'border-accent/40 bg-accent/10 text-accent'
+            : 'border-divider bg-surface text-text hover:border-accent/50 hover:text-text'
         }`}
       >
         Calendar
@@ -1286,10 +1324,10 @@ export default function HomePage() {
 
       <button
         onClick={() => setView('tasks')}
-        className={`rounded-lg border px-3 py-2 text-xs font-semibold transition sm:px-4 sm:text-sm ${
+        className={`rounded-none border px-3 py-2 text-[14px] font-semibold transition sm:px-4 sm:text-[16px] ${
           view === 'tasks'
-            ? 'border-cyan-500/40 bg-cyan-500/10 text-cyan-300'
-            : 'border-slate-700 bg-slate-900 text-slate-300 hover:border-cyan-500/50 hover:text-white'
+            ? 'border-accent/40 bg-accent/10 text-accent'
+            : 'border-divider bg-surface text-text hover:border-accent/50 hover:text-text'
         }`}
       >
         Tasks
@@ -1303,7 +1341,7 @@ export default function HomePage() {
       {isAdmin ? (
         <button
           onClick={handleAdminLogout}
-          className="rounded-lg border border-red-500/20 bg-red-500/10 px-3 py-2 text-xs font-semibold text-red-300 transition hover:bg-red-500/20 sm:px-4 sm:text-sm"
+          className="rounded-none border border-danger/30 bg-danger/10 px-3 py-2 text-[14px] font-semibold text-danger transition hover:bg-danger/10 sm:px-4 sm:text-[16px]"
         >
           Admin Sign Out
         </button>
@@ -1313,7 +1351,7 @@ export default function HomePage() {
             setShowLogin(true);
             setView('tasks');
           }}
-          className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-xs font-semibold text-slate-300 transition hover:border-cyan-500/50 hover:text-white sm:px-4 sm:text-sm"
+          className="rounded-none border border-divider bg-surface px-3 py-2 text-[14px] font-semibold text-text transition hover:border-accent/50 hover:text-text sm:px-4 sm:text-[16px]"
         >
           Admin Sign In
         </button>
@@ -1335,19 +1373,19 @@ export default function HomePage() {
             =================================================== */}
 
         {view ===
-          'calendar' && (
+ 'calendar' && (
           <div className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1fr)_290px]">
 
-            <section className="min-w-0 overflow-hidden rounded-2xl border border-slate-800 bg-slate-950/70 shadow-2xl">
+            <section className="min-w-0 overflow-hidden rounded-none border border-divider bg-bg ">
 
-              <div className="flex flex-col gap-3 border-b border-slate-800 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex flex-col gap-3 border-b border-divider px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
 
                 <div>
-                  <h2 className="text-lg font-bold sm:text-xl">
+                  <h2 className="text-[20px] font-bold sm:text-xl">
                     {monthTitle}
                   </h2>
 
-                  <p className="mt-1 text-xs text-slate-500">
+                  <p className="mt-1 text-[16px] text-text0">
                     Club events,
                     workshops,
                     meetings, and
@@ -1361,7 +1399,7 @@ export default function HomePage() {
                     onClick={
                       goToToday
                     }
-                    className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-xs font-semibold text-slate-300 transition hover:border-cyan-500/50 hover:text-white"
+                    className="rounded-none border border-divider bg-surface px-3 py-2 text-[14px] font-semibold text-text transition hover:border-accent/50 hover:text-text"
                   >
                     Today
                   </button>
@@ -1370,7 +1408,7 @@ export default function HomePage() {
                     onClick={
                       goToPreviousMonth
                     }
-                    className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-700 bg-slate-900 text-slate-300 transition hover:border-cyan-500/50 hover:text-white"
+                    className="flex h-9 w-9 items-center justify-center rounded-none border border-divider bg-surface text-text transition hover:border-accent/50 hover:text-text"
                   >
                     ←
                   </button>
@@ -1379,7 +1417,7 @@ export default function HomePage() {
                     onClick={
                       goToNextMonth
                     }
-                    className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-700 bg-slate-900 text-slate-300 transition hover:border-cyan-500/50 hover:text-white"
+                    className="flex h-9 w-9 items-center justify-center rounded-none border border-divider bg-surface text-text transition hover:border-accent/50 hover:text-text"
                   >
                     →
                   </button>
@@ -1388,21 +1426,21 @@ export default function HomePage() {
 
               </div>
 
-              <div className="grid grid-cols-7 border-b border-slate-800">
+              <div className="hidden grid-cols-7 border-b border-divider md:grid">
 
                 {[
-                  'Sun',
-                  'Mon',
-                  'Tue',
-                  'Wed',
-                  'Thu',
-                  'Fri',
-                  'Sat',
+ 'Sun',
+ 'Mon',
+ 'Tue',
+ 'Wed',
+ 'Thu',
+ 'Fri',
+ 'Sat',
                 ].map(
                   (day) => (
                     <div
                       key={day}
-                      className="border-r border-slate-800 px-1 py-2 text-center text-[9px] font-bold uppercase tracking-wider text-slate-500 last:border-r-0 sm:text-[10px]"
+                      className="border-r border-divider px-1 py-2 text-center text-[14px] font-bold uppercase tracking-wider text-text0 last:border-r-0 sm:text-[14px]"
                     >
                       {day}
                     </div>
@@ -1411,7 +1449,7 @@ export default function HomePage() {
 
               </div>
 
-              <div className="grid grid-cols-7">
+              <div className="hidden grid-cols-7 md:grid">
 
                 {calendarDays.map(
                   (
@@ -1452,19 +1490,19 @@ export default function HomePage() {
 
                           ${
                             blackout
-                              ? 'border-red-900/70 bg-red-950/40'
+                              ? 'border-danger/30 bg-danger/10'
                               : isCurrentMonth
-                              ? 'border-slate-800 bg-slate-950/30'
-                              : 'border-slate-800 bg-slate-950/70'
+                              ? 'border-divider bg-bg'
+                              : 'border-divider bg-bg'
                           }
 
                           ${
                             isToday &&
                             !blackout
-                              ? 'bg-indigo-950/30'
+                              ? 'bg-surface-2'
                               : ''
                           }
-                        `}
+ `}
                       >
 
                         <div className="mb-1 flex items-center justify-between">
@@ -1472,26 +1510,26 @@ export default function HomePage() {
                           <span
                             className={`
                               flex h-6 w-6 items-center justify-center
-                              rounded-full text-[10px] font-semibold
+                              rounded-none text-[14px] font-semibold
 
                               ${
                                 isToday &&
                                 !blackout
-                                  ? 'bg-cyan-500 text-slate-950'
+                                  ? 'bg-accent text-on-accent'
                                   : blackout
-                                  ? 'text-red-300'
+                                  ? 'text-danger'
                                   : isCurrentMonth
-                                  ? 'text-slate-300'
-                                  : 'text-slate-700'
+                                  ? 'text-text'
+                                  : 'text-muted/60'
                               }
-                            `}
+ `}
                           >
                             {date.getDate()}
                           </span>
 
                           {isToday &&
                             !blackout && (
-                              <span className="hidden text-[7px] font-bold uppercase tracking-wider text-cyan-400 sm:block">
+                              <span className="hidden text-[14px] font-bold uppercase tracking-wider text-accent sm:block">
                                 Today
                               </span>
                             )}
@@ -1499,8 +1537,8 @@ export default function HomePage() {
                         </div>
 
                         {blackout && (
-                          <div className="mb-1 rounded border border-red-900/70 bg-red-950/70 px-1 py-1">
-                            <p className="truncate text-[7px] font-bold uppercase tracking-wide text-red-400 sm:text-[8px]">
+                          <div className="mb-1 rounded-none border border-danger/30 bg-danger/10 px-1 py-1">
+                            <p className="break-words text-[16px] font-bold uppercase tracking-wide text-danger">
                               {
                                 blackout.title
                               }
@@ -1529,15 +1567,15 @@ export default function HomePage() {
                                     )
                                   }
                                   className={`
-                                    block w-full truncate rounded
+                                    block w-full break-words rounded-none
                                     border px-1 py-1 text-left
-                                    text-[7px] font-semibold
-                                    transition sm:text-[8px]
+                                    text-[14px] font-semibold
+                                    transition sm:text-[14px]
 
                                     ${getEventColor(
                                       event.type
                                     )}
-                                  `}
+ `}
                                 >
                                   {
                                     event.title
@@ -1548,7 +1586,7 @@ export default function HomePage() {
 
                           {events.length >
                             3 && (
-                            <p className="px-1 text-[7px] text-slate-500">
+                            <p className="px-1 text-[16px] text-text0">
                               +
                               {events.length -
                                 3}{' '}
@@ -1565,40 +1603,70 @@ export default function HomePage() {
 
               </div>
 
-              <div className="flex flex-wrap items-center gap-3 border-t border-slate-800 px-4 py-3">
+              {/* Agenda: the month as a list, for narrow screens */}
+              <div className="md:hidden">
+                {calendarDays.filter(({ isCurrentMonth }) => isCurrentMonth).map(({ date }) => {
+                  const key = getDateKey(date);
+                  const dayEvents = getEventsForDate(date);
+                  const closed = getBlackoutDate(key);
+                  if (dayEvents.length === 0 && !closed) return null;
+                  return (
+                    <div key={key} className="border-b border-divider px-4 py-4">
+                      <p className="text-[16px] font-semibold text-text">
+                        {date.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })}
+                      </p>
+                      {closed && <p className="mt-2 text-[16px] font-semibold text-danger">{closed.title}</p>}
+                      <div className="mt-2 flex flex-col gap-2">
+                        {dayEvents.map((event) => (
+                          <button
+                            key={event.id}
+                            type="button"
+                            onClick={() => setSelectedEvent(event)}
+                            className={`block w-full break-words border px-3 py-3 text-left text-[16px] font-semibold ${getEventColor(event.type)}`}
+                          >
+                            {event.title}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="flex flex-wrap items-center gap-3 border-t border-divider px-4 py-3">
 
                 <div className="flex items-center gap-2">
-                  <span className="h-2.5 w-2.5 rounded-full bg-cyan-500" />
-                  <span className="text-[10px] text-slate-500">
+                  <span className="h-2.5 w-2.5 rounded-none bg-accent" />
+                  <span className="text-[14px] text-text0">
                     Today
                   </span>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="h-2.5 w-2.5 rounded bg-red-500" />
-                  <span className="text-[10px] text-slate-500">
+                  <span className="h-2.5 w-2.5 rounded-none bg-danger" />
+                  <span className="text-[14px] text-text0">
                     No Club
                     Activities
                   </span>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="h-2.5 w-2.5 rounded bg-cyan-400" />
-                  <span className="text-[10px] text-slate-500">
+                  <span className="h-2.5 w-2.5 rounded-none bg-accent" />
+                  <span className="text-[14px] text-text0">
                     Workshop
                   </span>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="h-2.5 w-2.5 rounded bg-purple-400" />
-                  <span className="text-[10px] text-slate-500">
+                  <span className="h-2.5 w-2.5 rounded-none bg-text" />
+                  <span className="text-[14px] text-text0">
                     Meeting
                   </span>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="h-2.5 w-2.5 rounded bg-orange-400" />
-                  <span className="text-[10px] text-slate-500">
+                  <span className="h-2.5 w-2.5 rounded-none bg-ember" />
+                  <span className="text-[14px] text-text0">
                     Competition
                   </span>
                 </div>
@@ -1611,16 +1679,16 @@ export default function HomePage() {
                 LIVE TASKS
                 ================================================= */}
 
-            <aside className="h-fit rounded-2xl border border-slate-800 bg-slate-950/70">
+            <aside className="h-fit rounded-none border border-divider bg-bg">
 
-              <div className="flex items-center justify-between border-b border-slate-800 px-4 py-4">
+              <div className="flex items-center justify-between border-b border-divider px-4 py-4">
 
                 <div>
-                  <h2 className="text-sm font-bold">
+                  <h2 className="text-[16px] font-bold">
                     Live Tasks
                   </h2>
 
-                  <p className="mt-1 text-[10px] text-slate-500">
+                  <p className="mt-1 text-[16px] text-text0">
                     Current club
                     tasks
                   </p>
@@ -1629,10 +1697,10 @@ export default function HomePage() {
                 <button
                   onClick={() =>
                     setView(
-                      'tasks'
+ 'tasks'
                     )
                   }
-                  className="text-[10px] font-semibold text-cyan-400 hover:text-cyan-300"
+                  className="text-[14px] font-semibold text-accent hover:text-accent"
                 >
                   View all
                 </button>
@@ -1643,14 +1711,14 @@ export default function HomePage() {
 
                 {activeTasks.length ===
                 0 ? (
-                  <div className="rounded-xl border border-dashed border-slate-800 px-4 py-8 text-center">
+                  <div className="rounded-none border border-dashed border-divider px-4 py-8 text-center">
 
-                    <p className="text-xs font-semibold text-slate-400">
+                    <p className="text-[16px] font-semibold text-muted">
                       No active
                       tasks
                     </p>
 
-                    <p className="mt-1 text-[10px] text-slate-600">
+                    <p className="mt-1 text-[16px] text-muted">
                       Everything is
                       currently
                       completed.
@@ -1679,21 +1747,21 @@ export default function HomePage() {
                               }
                               onClick={() =>
                                 setView(
-                                  'tasks'
+ 'tasks'
                                 )
                               }
-                              className="block w-full rounded-xl border border-slate-800 bg-slate-900/40 p-3 text-left transition hover:border-cyan-500/30 hover:bg-slate-900/80"
+                              className="block w-full rounded-none border border-divider bg-surface p-3 text-left transition hover:border-accent/30 hover:bg-surface"
                             >
 
                               <div className="flex items-start justify-between gap-2">
 
-                                <p className="line-clamp-2 text-xs font-semibold text-slate-200">
+                                <p className="line-clamp-2 text-[16px] font-semibold text-text">
                                   {
                                     task.title
                                   }
                                 </p>
 
-                                <span className="shrink-0 text-[9px] font-bold text-cyan-400">
+                                <span className="shrink-0 text-[14px] font-bold text-accent">
                                   +
                                   {
                                     task.points
@@ -1704,7 +1772,7 @@ export default function HomePage() {
 
                               <div className="mt-2 flex flex-wrap gap-1">
 
-                                <span className="rounded border border-slate-700 bg-slate-950 px-1.5 py-0.5 text-[8px] font-semibold text-slate-400">
+                                <span className="rounded-none border border-divider bg-bg px-1.5 py-0.5 text-[14px] font-semibold text-muted">
                                   {
                                     task.category
                                   }
@@ -1712,12 +1780,12 @@ export default function HomePage() {
 
                                 <span
                                   className={`
-                                    rounded border px-1.5 py-0.5
-                                    text-[8px] font-semibold
+                                    rounded-none border px-1.5 py-0.5
+                                    text-[14px] font-semibold
                                     ${getPriorityColor(
                                       task.priority
                                     )}
-                                  `}
+ `}
                                 >
                                   {
                                     task.priority
@@ -1728,12 +1796,12 @@ export default function HomePage() {
 
                               <div className="mt-2 flex items-center justify-between gap-2">
 
-                                <span className="truncate text-[9px] text-slate-500">
+                                <span className="truncate text-[14px] text-text0">
                                   {assignee?.name ||
-                                    'Unassigned'}
+ 'Unassigned'}
                                 </span>
 
-                                <span className="shrink-0 text-[9px] text-slate-600">
+                                <span className="shrink-0 text-[14px] text-muted">
                                   {task.dueDate
                                     ? formatDate(
                                         task.dueDate
@@ -1744,7 +1812,7 @@ export default function HomePage() {
                               </div>
 
                               <div className="mt-2">
-                                <span className="text-[8px] font-semibold uppercase tracking-wider text-slate-600">
+                                <span className="text-[14px] font-semibold uppercase tracking-wider text-muted">
                                   {
                                     getTaskStatusLabel(
                                       task.status
@@ -1763,15 +1831,15 @@ export default function HomePage() {
 
               </div>
 
-              <div className="border-t border-slate-800 px-4 py-3">
+              <div className="border-t border-divider px-4 py-3">
 
                 <button
                   onClick={() =>
                     setView(
-                      'tasks'
+ 'tasks'
                     )
                   }
-                  className="block w-full rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-center text-[10px] font-semibold text-slate-400 transition hover:border-cyan-500/30 hover:text-cyan-400"
+                  className="block w-full rounded-none border border-divider bg-surface px-3 py-2 text-center text-[14px] font-semibold text-muted transition hover:border-accent/30 hover:text-accent"
                 >
                   Open Task
                   Manager
@@ -1795,7 +1863,7 @@ export default function HomePage() {
                 TASK HEADER
                 ================================================= */}
 
-            <div className="mb-6 border-b border-slate-800 pb-5">
+            <div className="mb-6 border-b border-divider pb-5">
 
               <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
 
@@ -1803,24 +1871,24 @@ export default function HomePage() {
 
                   <div className="mb-2 flex flex-wrap items-center gap-2">
 
-                    <span className="rounded border border-indigo-800 bg-indigo-950 px-2 py-0.5 text-xs font-bold uppercase tracking-widest text-indigo-400">
+                    <span className="rounded-none border border-accent bg-surface-2 px-2 py-0.5 text-[14px] font-bold uppercase tracking-widest text-accent">
                       Public Task
                       Portal
                     </span>
 
                     {isAdmin && (
-                      <span className="rounded border border-amber-800 bg-amber-950 px-2 py-0.5 text-[10px] font-bold uppercase text-amber-400">
+                      <span className="rounded-none border border-ember/40 bg-surface-2 px-2 py-0.5 text-[14px] font-bold uppercase text-ember">
                         Admin Mode
                       </span>
                     )}
 
                   </div>
 
-                  <h1 className="text-2xl font-extrabold text-white">
+                  <h1 className="text-2xl font-extrabold text-text">
                     Club Task Manager
                   </h1>
 
-                  <p className="mt-1 text-xs text-slate-500">
+                  <p className="mt-1 text-[16px] text-text0">
                     All club members can
                     view and work on
                     tasks.
@@ -1837,7 +1905,7 @@ export default function HomePage() {
                           true
                         )
                       }
-                      className="rounded-lg bg-indigo-600 px-4 py-2 text-xs font-medium text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-500"
+                      className="rounded-none bg-accent px-4 py-2 text-[14px] font-medium text-on-accent   transition hover:opacity-90"
                     >
                       + Create Task
                     </button>
@@ -1846,10 +1914,10 @@ export default function HomePage() {
                   <button
                     onClick={() =>
                       setView(
-                        'calendar'
+ 'calendar'
                       )
                     }
-                    className="rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-xs text-slate-300 transition hover:bg-slate-700"
+                    className="rounded-none border border-divider bg-surface-2 px-3 py-2 text-[14px] text-text transition hover:bg-surface-2"
                   >
                     Calendar
                   </button>
@@ -1865,9 +1933,9 @@ export default function HomePage() {
                 ================================================= */}
 
             {isAdmin && (
-              <div className="mb-6 flex flex-wrap gap-2 border-b border-slate-800/80 pb-4">
+              <div className="mb-6 flex flex-wrap gap-2 border-b border-divider pb-4">
 
-                <span className="mr-2 self-center text-xs font-semibold text-slate-400">
+                <span className="mr-2 self-center text-[14px] font-semibold text-muted">
                   Filter View:
                 </span>
 
@@ -1881,16 +1949,16 @@ export default function HomePage() {
                         )
                       }
                       className={`
-                        rounded-lg border px-3 py-1.5
-                        text-xs transition
+                        rounded-none border px-3 py-1.5
+                        text-[14px] transition
 
                         ${
                           selectedAdminTab ===
                           tab
-                            ? 'border-indigo-500 bg-indigo-600 font-semibold text-white'
-                            : 'border-slate-800 bg-slate-900 text-slate-400 hover:border-slate-700'
+                            ? 'border-accent bg-accent font-semibold text-on-accent'
+                            : 'border-divider bg-surface text-muted hover:border-divider'
                         }
-                      `}
+ `}
                     >
                       {tab}
                     </button>
@@ -1914,9 +1982,9 @@ export default function HomePage() {
 
                 {pendingReviewTasks.length >
                   0 && (
-                  <section className="space-y-4 rounded-2xl border border-amber-900/50 bg-amber-950/20 p-4">
+                  <section className="space-y-4 rounded-none border border-ember/50 bg-ember/20 p-4">
 
-                    <h2 className="flex items-center justify-between text-sm font-bold uppercase tracking-wider text-amber-400">
+                    <h2 className="flex items-center justify-between text-[16px] font-bold uppercase tracking-wider text-ember">
 
                       <span>
                         Pending Admin
@@ -1927,7 +1995,7 @@ export default function HomePage() {
                         )
                       </span>
 
-                      <span className="text-[10px] font-normal normal-case text-amber-500/80">
+                      <span className="text-[14px] font-normal normal-case text-ember/80">
                         Points awarded
                         upon approval
                       </span>
@@ -1948,19 +2016,19 @@ export default function HomePage() {
                               key={
                                 task.id
                               }
-                              className="rounded-xl border border-amber-800/60 bg-slate-900 p-4"
+                              className="rounded-none border border-ember/60 bg-surface p-4"
                             >
 
                               <div className="mb-2 flex justify-between">
 
-                                <span className="rounded border border-amber-800 bg-amber-950 px-2 py-0.5 text-[10px] uppercase text-amber-300">
+                                <span className="rounded-none border border-ember/40 bg-surface-2 px-2 py-0.5 text-[14px] uppercase text-ember">
                                   {
                                     task.category
                                   }{' '}
                                   • Review
                                 </span>
 
-                                <span className="text-xs font-bold text-amber-400">
+                                <span className="text-[14px] font-bold text-ember">
                                   +
                                   {
                                     task.points
@@ -1970,17 +2038,17 @@ export default function HomePage() {
 
                               </div>
 
-                              <h3 className="text-sm font-semibold text-white">
+                              <h3 className="text-[16px] font-semibold text-text">
                                 {
                                   task.title
                                 }
                               </h3>
 
-                              <p className="mb-3 mt-1 text-[11px] text-slate-400">
+                              <p className="mb-3 mt-1 text-[16px] text-muted">
                                 Submitted by{' '}
                                 {
                                   assignee?.name ||
-                                  'Unknown'
+ 'Unknown'
                                 }
                               </p>
 
@@ -1994,7 +2062,7 @@ export default function HomePage() {
                                       key={
                                         item.id
                                       }
-                                      className="text-xs text-slate-300"
+                                      className="text-[14px] text-text"
                                     >
                                       ✓{' '}
                                       {
@@ -2007,7 +2075,7 @@ export default function HomePage() {
                               </div>
 
                               {isAdmin && (
-                                <div className="flex justify-end gap-2 border-t border-slate-800 pt-3">
+                                <div className="flex justify-end gap-2 border-t border-divider pt-3">
 
                                   <button
                                     onClick={() =>
@@ -2015,7 +2083,7 @@ export default function HomePage() {
                                         task.id
                                       )
                                     }
-                                    className="rounded border border-red-800 bg-red-950 px-3 py-1.5 text-[11px] text-red-300 hover:bg-red-900"
+                                    className="rounded-none border border-danger/40 bg-danger/10 px-3 py-1.5 text-[14px] text-danger hover:bg-danger/10"
                                   >
                                     Reject
                                   </button>
@@ -2026,7 +2094,7 @@ export default function HomePage() {
                                         task.id
                                       )
                                     }
-                                    className="rounded bg-emerald-600 px-3 py-1.5 text-[11px] font-bold text-white hover:bg-emerald-500"
+                                    className="rounded-none bg-accent px-3 py-1.5 text-[14px] font-bold text-on-accent hover:bg-accent"
                                   >
                                     Approve
                                   </button>
@@ -2050,7 +2118,7 @@ export default function HomePage() {
 
                 <section className="space-y-4">
 
-                  <h2 className="text-sm font-bold uppercase tracking-wider text-slate-300">
+                  <h2 className="text-[16px] font-bold uppercase tracking-wider text-text">
                     Active Work (
                     {
                       activeTasks.length
@@ -2060,7 +2128,7 @@ export default function HomePage() {
 
                   {activeTasks.length ===
                   0 ? (
-                    <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-8 text-center text-xs text-slate-500">
+                    <div className="rounded-none border border-divider bg-surface p-8 text-center text-[14px] text-text0">
                       No active tasks
                       pending.
                     </div>
@@ -2089,12 +2157,12 @@ export default function HomePage() {
                               key={
                                 task.id
                               }
-                              className="rounded-xl border border-slate-800 bg-slate-900 p-4"
+                              className="rounded-none border border-divider bg-surface p-4"
                             >
 
                               <div className="mb-3 flex items-center justify-between">
 
-                                <span className="rounded border border-slate-700 bg-slate-800 px-2 py-0.5 text-[10px] font-semibold uppercase text-indigo-300">
+                                <span className="rounded-none border border-divider bg-surface-2 px-2 py-0.5 text-[14px] font-semibold uppercase text-accent">
                                   {
                                     task.category
                                   }
@@ -2102,7 +2170,7 @@ export default function HomePage() {
 
                                 <div className="flex items-center gap-2">
 
-                                  <span className="rounded border border-amber-800/50 bg-amber-950/40 px-2 py-0.5 text-xs font-bold text-amber-400">
+                                  <span className="rounded-none border border-ember/50 bg-ember/40 px-2 py-0.5 text-[14px] font-bold text-ember">
                                     +
                                     {
                                       task.points
@@ -2117,7 +2185,7 @@ export default function HomePage() {
                                           task.id
                                         )
                                       }
-                                      className="text-xs text-slate-500 hover:text-red-400"
+                                      className="text-[14px] text-text0 hover:text-danger"
                                     >
                                       ✕
                                     </button>
@@ -2127,7 +2195,7 @@ export default function HomePage() {
 
                               </div>
 
-                              <h3 className="text-sm font-semibold text-white">
+                              <h3 className="text-[16px] font-semibold text-text">
                                 {
                                   task.title
                                 }
@@ -2143,7 +2211,7 @@ export default function HomePage() {
                                       key={
                                         item.id
                                       }
-                                      className="flex cursor-pointer items-start gap-2 text-xs text-slate-300"
+                                      className="flex cursor-pointer items-start gap-2 text-[14px] text-text"
                                     >
 
                                       <input
@@ -2157,13 +2225,13 @@ export default function HomePage() {
                                             item.id
                                           )
                                         }
-                                        className="mt-0.5 rounded border-slate-700 bg-slate-800 text-indigo-500 focus:ring-0"
+                                        className="mt-0.5 rounded-none border-divider bg-surface-2 text-accent focus:ring-0"
                                       />
 
                                       <span
                                         className={
                                           item.completed
-                                            ? 'line-through text-slate-500'
+                                            ? 'line-through text-text0'
                                             : ''
                                         }
                                       >
@@ -2178,7 +2246,7 @@ export default function HomePage() {
 
                               </div>
 
-                              <div className="flex items-center justify-between border-t border-slate-800 pt-3">
+                              <div className="flex items-center justify-between border-t border-divider pt-3">
 
                                 <div className="flex items-center gap-2">
 
@@ -2188,12 +2256,12 @@ export default function HomePage() {
                                     )}
                                     alt={
                                       assignee?.name ||
-                                      'Member'
+ 'Member'
                                     }
-                                    className="h-6 w-6 rounded-full bg-slate-800 object-cover"
+                                    className="h-6 w-6 rounded-none bg-surface-2 object-cover"
                                   />
 
-                                  <span className="max-w-[110px] truncate text-xs text-slate-300">
+                                  <span className="max-w-[110px] truncate text-[14px] text-text">
                                     {
                                       assignee?.name
                                     }
@@ -2208,15 +2276,15 @@ export default function HomePage() {
                                     )
                                   }
                                   className={`
-                                    rounded-lg border px-3 py-1.5
-                                    text-xs font-bold transition
+                                    rounded-none border px-3 py-1.5
+                                    text-[14px] font-bold transition
 
                                     ${
                                       allDone
-                                        ? 'border-amber-500 bg-amber-600 text-white'
-                                        : 'border-indigo-800 bg-indigo-950 text-indigo-300 hover:bg-indigo-600 hover:text-white'
+                                        ? 'border-ember/40 bg-ember text-on-ember'
+                                        : 'border-accent bg-surface-2 text-accent hover:opacity-90 hover:text-text'
                                     }
-                                  `}
+ `}
                                 >
                                   Submit for
                                   Approval
@@ -2240,9 +2308,9 @@ export default function HomePage() {
 
                 {completedTasks.length >
                   0 && (
-                  <section className="space-y-4 border-t border-slate-800 pt-4">
+                  <section className="space-y-4 border-t border-divider pt-4">
 
-                    <h2 className="text-sm font-bold uppercase tracking-wider text-emerald-400">
+                    <h2 className="text-[16px] font-bold uppercase tracking-wider text-accent">
                       Approved &
                       Completed (
                       {
@@ -2265,18 +2333,18 @@ export default function HomePage() {
                               key={
                                 task.id
                               }
-                              className="rounded-xl border border-emerald-950/60 bg-slate-900/60 p-4"
+                              className="rounded-none border border-accent/30 bg-surface p-4"
                             >
 
                               <div className="flex justify-between">
 
                                 <div>
 
-                                  <span className="rounded border border-emerald-900/40 bg-emerald-950/60 px-2 py-0.5 text-[10px] text-emerald-400">
+                                  <span className="rounded-none border border-accent/30 bg-surface-2 px-2 py-0.5 text-[14px] text-accent">
                                     Approved
                                   </span>
 
-                                  <h3 className="mt-2 text-sm text-slate-300 line-through">
+                                  <h3 className="mt-2 text-[16px] text-text line-through">
                                     {
                                       task.title
                                     }
@@ -2284,7 +2352,7 @@ export default function HomePage() {
 
                                 </div>
 
-                                <span className="text-xs font-bold text-emerald-400">
+                                <span className="text-[14px] font-bold text-accent">
                                   +
                                   {
                                     task.points
@@ -2294,9 +2362,9 @@ export default function HomePage() {
 
                               </div>
 
-                              <div className="mt-3 flex items-center justify-between border-t border-slate-800 pt-2">
+                              <div className="mt-3 flex items-center justify-between border-t border-divider pt-2">
 
-                                <span className="text-xs text-slate-400">
+                                <span className="text-[14px] text-muted">
                                   {
                                     assignee?.name
                                   }
@@ -2309,7 +2377,7 @@ export default function HomePage() {
                                         task.id
                                       )
                                     }
-                                    className="text-[10px] text-slate-500 underline hover:text-white"
+                                    className="text-[14px] text-text0 underline hover:text-text"
                                   >
                                     Re-open
                                   </button>
@@ -2335,11 +2403,11 @@ export default function HomePage() {
 
               <aside>
 
-                <h2 className="mb-4 text-sm font-bold uppercase tracking-wider text-slate-300">
+                <h2 className="mb-4 text-[16px] font-bold uppercase tracking-wider text-text">
                   Live Leaderboard
                 </h2>
 
-                <div className="divide-y divide-slate-800/60 rounded-xl border border-slate-800 bg-slate-900 p-4">
+                <div className="divide-y divide-divider rounded-none border border-divider bg-surface p-4">
 
                   {leaderboard.map(
                     (
@@ -2355,7 +2423,7 @@ export default function HomePage() {
 
                         <div className="flex items-center gap-3">
 
-                          <span className="w-5 text-xs font-bold text-slate-500">
+                          <span className="w-5 text-[14px] font-bold text-text0">
                             #
                             {index +
                               1}
@@ -2368,17 +2436,17 @@ export default function HomePage() {
                             alt={
                               member.name
                             }
-                            className="h-8 w-8 rounded-full bg-slate-800 object-cover"
+                            className="h-8 w-8 rounded-none bg-surface-2 object-cover"
                           />
 
                           <div>
-                            <p className="text-xs font-semibold text-white">
+                            <p className="text-[16px] font-semibold text-text">
                               {
                                 member.name
                               }
                             </p>
 
-                            <p className="text-[10px] text-slate-500">
+                            <p className="text-[16px] text-text0">
                               {
                                 member.role
                               }
@@ -2389,14 +2457,14 @@ export default function HomePage() {
 
                         <div className="text-right">
 
-                          <p className="text-xs font-bold text-amber-400">
+                          <p className="text-[16px] font-bold text-ember">
                             {
                               member.totalPoints
                             }{' '}
                             pts
                           </p>
 
-                          <p className="text-[10px] text-slate-500">
+                          <p className="text-[16px] text-text0">
                             {
                               member.doneCount
                             }{' '}
@@ -2426,14 +2494,14 @@ export default function HomePage() {
 
       {showLogin && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 "
           onClick={() =>
             setShowLogin(false)
           }
         >
 
           <div
-            className="w-full max-w-sm rounded-2xl border border-slate-800 bg-slate-950 p-6 shadow-2xl"
+            className="w-full max-w-sm rounded-none border border-divider bg-bg p-6 "
             onClick={(event) =>
               event.stopPropagation()
             }
@@ -2441,15 +2509,15 @@ export default function HomePage() {
 
             <div className="mb-6">
 
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-cyan-400">
+              <p className="text-[16px] font-bold uppercase tracking-[0.2em] text-accent">
                 AUS IoT Club
               </p>
 
-              <h2 className="mt-2 text-xl font-bold text-white">
+              <h2 className="mt-2 text-xl font-bold text-text">
                 Admin Sign In
               </h2>
 
-              <p className="mt-1 text-xs text-slate-500">
+              <p className="mt-1 text-[16px] text-text0">
                 Sign in to create and
                 manage club tasks.
               </p>
@@ -2460,7 +2528,7 @@ export default function HomePage() {
 
               <div>
 
-                <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                <label className="mb-1 block text-[14px] font-bold uppercase tracking-wider text-text0">
                   Username
                 </label>
 
@@ -2474,13 +2542,13 @@ export default function HomePage() {
                   onKeyDown={(event) => {
                     if (
                       event.key ===
-                      'Enter'
+ 'Enter'
                     ) {
                       handleAdminLogin();
                     }
                   }}
                   autoComplete="username"
-                  className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2.5 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-cyan-500"
+                  className="w-full rounded-none border border-divider bg-surface px-3 py-2.5 text-[16px] text-text outline-none transition placeholder:text-muted focus:border-accent"
                   placeholder="Username"
                 />
 
@@ -2488,7 +2556,7 @@ export default function HomePage() {
 
               <div>
 
-                <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                <label className="mb-1 block text-[14px] font-bold uppercase tracking-wider text-text0">
                   Password
                 </label>
 
@@ -2503,20 +2571,20 @@ export default function HomePage() {
                   onKeyDown={(event) => {
                     if (
                       event.key ===
-                      'Enter'
+ 'Enter'
                     ) {
                       handleAdminLogin();
                     }
                   }}
                   autoComplete="current-password"
-                  className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2.5 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-cyan-500"
+                  className="w-full rounded-none border border-divider bg-surface px-3 py-2.5 text-[16px] text-text outline-none transition placeholder:text-muted focus:border-accent"
                   placeholder="Password"
                 />
 
               </div>
 
               {loginError && (
-                <div className="rounded-lg border border-red-900/60 bg-red-950/40 px-3 py-2 text-xs text-red-400">
+                <div className="rounded-none border border-danger/30 bg-danger/10 px-3 py-2 text-[14px] text-danger">
                   {
                     loginError
                   }
@@ -2531,7 +2599,7 @@ export default function HomePage() {
                       false
                     )
                   }
-                  className="flex-1 rounded-lg border border-slate-700 bg-slate-900 px-4 py-2.5 text-xs font-semibold text-slate-400 transition hover:bg-slate-800"
+                  className="flex-1 rounded-none border border-divider bg-surface px-4 py-2.5 text-[14px] font-semibold text-muted transition hover:bg-surface-2"
                 >
                   Cancel
                 </button>
@@ -2540,7 +2608,7 @@ export default function HomePage() {
                   onClick={
                     handleAdminLogin
                   }
-                  className="flex-1 rounded-lg bg-cyan-600 px-4 py-2.5 text-xs font-bold text-white transition hover:bg-cyan-500"
+                  className="flex-1 rounded-none bg-accent px-4 py-2.5 text-[14px] font-bold text-on-accent transition hover:opacity-90"
                 >
                   Sign In
                 </button>
@@ -2561,7 +2629,7 @@ export default function HomePage() {
       {showCreateTask &&
         isAdmin && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 "
             onClick={() =>
               setShowCreateTask(
                 false
@@ -2570,7 +2638,7 @@ export default function HomePage() {
           >
 
             <div
-              className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-slate-800 bg-slate-950 p-6 shadow-2xl"
+              className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-none border border-divider bg-bg p-6 "
               onClick={(event) =>
                 event.stopPropagation()
               }
@@ -2580,11 +2648,11 @@ export default function HomePage() {
 
                 <div>
 
-                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-indigo-400">
+                  <p className="text-[16px] font-bold uppercase tracking-[0.2em] text-accent">
                     Admin
                   </p>
 
-                  <h2 className="mt-1 text-xl font-bold text-white">
+                  <h2 className="mt-1 text-xl font-bold text-text">
                     Create Task
                   </h2>
 
@@ -2596,7 +2664,7 @@ export default function HomePage() {
                       false
                     )
                   }
-                  className="text-slate-500 hover:text-white"
+                  className="text-text0 hover:text-text"
                 >
                   ×
                 </button>
@@ -2609,7 +2677,7 @@ export default function HomePage() {
 
                 <div>
 
-                  <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                  <label className="mb-1 block text-[14px] font-bold uppercase tracking-wider text-text0">
                     Task Title
                   </label>
 
@@ -2623,7 +2691,7 @@ export default function HomePage() {
                           .value
                       )
                     }
-                    className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2.5 text-sm text-white outline-none focus:border-indigo-500"
+                    className="w-full rounded-none border border-divider bg-surface px-3 py-2.5 text-[16px] text-text outline-none focus:border-accent"
                     placeholder="e.g. Design Instagram post"
                   />
 
@@ -2633,7 +2701,7 @@ export default function HomePage() {
 
                 <div>
 
-                  <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                  <label className="mb-1 block text-[14px] font-bold uppercase tracking-wider text-text0">
                     Category
                   </label>
 
@@ -2647,13 +2715,13 @@ export default function HomePage() {
                           .value
                       )
                     }
-                    className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2.5 text-sm text-white outline-none focus:border-indigo-500"
+                    className="w-full rounded-none border border-divider bg-surface px-3 py-2.5 text-[16px] text-text outline-none focus:border-accent"
                   >
 
                     {ADMIN_TABS.filter(
                       (item) =>
                         item !==
-                        'ALL'
+ 'ALL'
                     ).map(
                       (
                         category
@@ -2681,7 +2749,7 @@ export default function HomePage() {
 
                 <div>
 
-                  <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                  <label className="mb-1 block text-[14px] font-bold uppercase tracking-wider text-text0">
                     Assign To
                   </label>
 
@@ -2695,7 +2763,7 @@ export default function HomePage() {
                           .value
                       )
                     }
-                    className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2.5 text-sm text-white outline-none focus:border-indigo-500"
+                    className="w-full rounded-none border border-divider bg-surface px-3 py-2.5 text-[16px] text-text outline-none focus:border-accent"
                   >
 
                     <option value="">
@@ -2729,7 +2797,7 @@ export default function HomePage() {
 
                 <div>
 
-                  <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                  <label className="mb-1 block text-[14px] font-bold uppercase tracking-wider text-text0">
                     Due Date
                   </label>
 
@@ -2744,7 +2812,7 @@ export default function HomePage() {
                           .value
                       )
                     }
-                    className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2.5 text-sm text-white outline-none focus:border-indigo-500"
+                    className="w-full rounded-none border border-divider bg-surface px-3 py-2.5 text-[16px] text-text outline-none focus:border-accent"
                   />
 
                 </div>
@@ -2755,7 +2823,7 @@ export default function HomePage() {
 
                   <div>
 
-                    <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                    <label className="mb-1 block text-[14px] font-bold uppercase tracking-wider text-text0">
                       Points
                     </label>
 
@@ -2773,14 +2841,14 @@ export default function HomePage() {
                             .value
                         )
                       }
-                      className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2.5 text-sm text-white outline-none focus:border-indigo-500"
+                      className="w-full rounded-none border border-divider bg-surface px-3 py-2.5 text-[16px] text-text outline-none focus:border-accent"
                     />
 
                   </div>
 
                   <div>
 
-                    <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                    <label className="mb-1 block text-[14px] font-bold uppercase tracking-wider text-text0">
                       Priority
                     </label>
 
@@ -2796,7 +2864,7 @@ export default function HomePage() {
                             .value
                         )
                       }
-                      className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2.5 text-sm text-white outline-none focus:border-indigo-500"
+                      className="w-full rounded-none border border-divider bg-surface px-3 py-2.5 text-[16px] text-text outline-none focus:border-accent"
                     >
 
                       <option>
@@ -2821,7 +2889,7 @@ export default function HomePage() {
 
                 <div>
 
-                  <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                  <label className="mb-1 block text-[14px] font-bold uppercase tracking-wider text-text0">
                     Checklist
                   </label>
 
@@ -2836,11 +2904,11 @@ export default function HomePage() {
                       )
                     }
                     rows={4}
-                    className="w-full resize-none rounded-lg border border-slate-700 bg-slate-900 px-3 py-2.5 text-sm text-white outline-none focus:border-indigo-500"
+                    className="w-full resize-none rounded-none border border-divider bg-surface px-3 py-2.5 text-[16px] text-text outline-none focus:border-accent"
                     placeholder="Research topic, Create design, Submit final version"
                   />
 
-                  <p className="mt-1 text-[9px] text-slate-600">
+                  <p className="mt-1 text-[16px] text-muted">
                     Separate checklist
                     items with commas.
                   </p>
@@ -2857,7 +2925,7 @@ export default function HomePage() {
                     !newTaskTitle.trim() ||
                     !newTaskAssignee
                   }
-                  className="w-full rounded-lg bg-indigo-600 px-4 py-3 text-sm font-bold text-white transition hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-40"
+                  className="w-full rounded-none bg-accent px-4 py-3 text-[16px] font-bold text-on-accent transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   Create Task
                 </button>
@@ -2875,7 +2943,7 @@ export default function HomePage() {
 
       {selectedEvent && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 "
           onClick={() =>
             setSelectedEvent(
               null
@@ -2884,25 +2952,25 @@ export default function HomePage() {
         >
 
           <div
-            className="w-full max-w-lg rounded-2xl border border-slate-800 bg-slate-950 shadow-2xl"
+            className="w-full max-w-lg rounded-none border border-divider bg-bg "
             onClick={(event) =>
               event.stopPropagation()
             }
           >
 
-            <div className="flex items-start justify-between border-b border-slate-800 p-5">
+            <div className="flex items-start justify-between border-b border-divider p-5">
 
               <div>
 
                 <div
                   className={`
-                    mb-2 inline-flex rounded-full
+                    mb-2 inline-flex rounded-none
                     border px-2 py-1
-                    text-[9px] font-bold uppercase
+                    text-[14px] font-bold uppercase
                     ${getEventColor(
                       selectedEvent.type
                     )}
-                  `}
+ `}
                 >
                   {
                     selectedEvent.type
@@ -2923,7 +2991,7 @@ export default function HomePage() {
                     null
                   )
                 }
-                className="text-xl text-slate-500 hover:text-white"
+                className="text-xl text-text0 hover:text-text"
               >
                 ×
               </button>
@@ -2933,11 +3001,11 @@ export default function HomePage() {
             <div className="space-y-4 p-5">
 
               <div>
-                <p className="text-[9px] font-bold uppercase tracking-wider text-slate-600">
+                <p className="text-[16px] font-bold uppercase tracking-wider text-muted">
                   Date
                 </p>
 
-                <p className="mt-1 text-sm text-slate-300">
+                <p className="mt-1 text-[16px] text-text">
                   {formatDate(
                     selectedEvent.date
                   )}
@@ -2960,11 +3028,11 @@ export default function HomePage() {
                 selectedEvent.endTime) && (
                 <div>
 
-                  <p className="text-[9px] font-bold uppercase tracking-wider text-slate-600">
+                  <p className="text-[16px] font-bold uppercase tracking-wider text-muted">
                     Time
                   </p>
 
-                  <p className="mt-1 text-sm text-slate-300">
+                  <p className="mt-1 text-[16px] text-text">
                     {formatTime(
                       selectedEvent.startTime
                     )}
@@ -2986,11 +3054,11 @@ export default function HomePage() {
               {selectedEvent.location && (
                 <div>
 
-                  <p className="text-[9px] font-bold uppercase tracking-wider text-slate-600">
+                  <p className="text-[16px] font-bold uppercase tracking-wider text-muted">
                     Location
                   </p>
 
-                  <p className="mt-1 text-sm text-slate-300">
+                  <p className="mt-1 text-[16px] text-text">
                     {
                       selectedEvent.location
                     }
@@ -3002,11 +3070,11 @@ export default function HomePage() {
               {selectedEvent.description && (
                 <div>
 
-                  <p className="text-[9px] font-bold uppercase tracking-wider text-slate-600">
+                  <p className="text-[16px] font-bold uppercase tracking-wider text-muted">
                     Description
                   </p>
 
-                  <p className="mt-1 text-sm leading-6 text-slate-300">
+                  <p className="mt-1 text-[16px] leading-6 text-text">
                     {
                       selectedEvent.description
                     }
