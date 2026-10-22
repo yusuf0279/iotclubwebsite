@@ -1,254 +1,120 @@
 "use client";
 
 import { useState } from "react";
-import { Tag } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { Reveal } from "@/components/motion";
 import { allNews } from "@/lib/news";
+import { formatNewsDate } from "@/lib/format";
 
-import { useRouter } from "next/navigation";
-
-
-    
 const tags = ["All", "Announcement", "Workshop", "Event", "Talk", "Project"];
 
-const tagColors: Record<string, string> = {
-  Workshop: "#00d4ff",
-  Announcement: "#f59e0b",
-  Talk: "#a78bfa",
-  Project: "#34d399",
-  Event: "#f472b6",
-};
-
-
-    
 export default function NewsPage() {
   const [activeTag, setActiveTag] = useState("All");
 
+  // Newest first.
   const newestFirst = [...allNews].reverse();
-
-  const filtered =
-    activeTag === "All"
-      ? newestFirst
-      : newestFirst.filter((n) => n.tag === activeTag);
-
-      const router = useRouter();
-
-  const glow = (color: string, strength = 10) =>
-    `0 0 ${strength}px ${color}55`;
+  const items =
+    activeTag === "All" ? newestFirst : newestFirst.filter((item) => item.tag === activeTag);
 
   return (
-    <div style={{ fontFamily: "'Inter', sans-serif", minHeight: "100vh" }}>
-      {/* HEADER */}
-      <div className="pt-28 pb-16 px-6" style={{ borderBottom: "1px solid rgba(0,212,255,0.1)" }}>
-        <div className="max-w-6xl mx-auto">
-          <p
-            style={{
-              fontFamily: "'Space Mono', monospace",
-              fontSize: "11px",
-              color: "#00d4ff",
-              textShadow: glow("#00d4ff"),
-            }}
-          >
-            — Club Updates
-          </p>
+    <div className="mx-auto max-w-[1280px] px-5 pb-8 pt-10 md:px-10 md:pt-14">
+      <h1 className="text-[clamp(56px,12vw,176px)] leading-[0.9] text-text">News and events</h1>
 
-          <h1
-            style={{
-              fontFamily: "'Space Mono', monospace",
-fontSize: "clamp(2rem, 6vw, 2.5rem)",
-              color: "#e8edf2",
-              textShadow: glow("#00d4ff", 12),
-            }}
-          >
-            News & Events
-          </h1>
-        </div>
-      </div>
-
-<div className="max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-12">
-  
-      {/* FILTERS */}
-<div className="flex gap-2 mb-10 overflow-x-auto pb-2">
-    {tags.map((tag) => {
-    const color = tagColors[tag] || "#00d4ff";
-    const isActive = activeTag === tag;
-
-    // strong glow (active)
-    const activeGlow = `0 0 8px ${color}aa, 0 0 16px ${color}55`;
-
-    // softer glow (hover)
-    const hoverGlow = `0 0 4px ${color}66`;
-
-    return (
-      <button
-        key={tag}
-        onClick={() => setActiveTag(tag)}
-        className="px-4 py-1.5 transition-all duration-200"
-        style={{
-          fontFamily: "'Space Mono', monospace",
-          fontSize: "11px",
-          letterSpacing: "0.1em",
-          textTransform: "uppercase",
-          borderRadius: "2px",
-          border: "1px solid",
-          borderColor: isActive ? color : "rgba(0,212,255,0.2)",
-          color: isActive ? color : "#6b7a8d",
-          background: isActive ? `${color}15` : "transparent",
-
-          // ACTIVE STATE (strong glow)
-          textShadow: isActive ? activeGlow : "none",
-          boxShadow: isActive ? `0 0 10px ${color}55` : "none",
-        }}
-        onMouseEnter={(e) => {
-          // box glow stays strong
-          e.currentTarget.style.boxShadow = `0 0 10px ${color}55, 0 0 20px ${color}25`;
-
-          // ✨ SEMI LETTER GLOW ON HOVER (lighter than active)
-          e.currentTarget.style.textShadow = activeGlow;
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.boxShadow = isActive
-            ? `0 0 10px ${color}55`
-            : "none";
-
-          e.currentTarget.style.textShadow = isActive
-            ? activeGlow
-            : "none";
-        }}
+      <div
+        role="group"
+        aria-label="Filter by type"
+        className="mt-8 flex gap-6 overflow-x-auto pb-1 md:mt-10"
       >
-        {tag}
-      </button>
-    );
-  })}
-</div>
-        {/* FEATURED */}
-        {filtered[0] && (() => {
-          const item = filtered[0];
-          const color = tagColors[item.tag] || "#00d4ff";
-
+        {tags.map((tag) => {
+          const active = tag === activeTag;
           return (
-<article
-onClick={() => router.push(`/news/${item.id}`)}
-
-className="grid grid-cols-1 md:grid-cols-2 mb-8 group cursor-pointer"
-              style={{
-                background: "#0e1520",
-                border: "1px solid rgba(0,212,255,0.12)",
-                borderRadius: "4px",
-              }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.borderColor = `${color}88`)
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.borderColor = "rgba(0,212,255,0.12)")
-              }
+            <button
+              key={tag}
+              type="button"
+              aria-pressed={active}
+              onClick={() => setActiveTag(tag)}
+              className={`shrink-0 py-2 text-[18px] font-medium transition-colors duration-150 ${
+                active ? "text-accent underline decoration-2 underline-offset-8" : "text-muted hover:text-text"
+              }`}
             >
-            <img
-  src={item.image}
-  alt={item.title}
-className="w-full h-48 md:h-auto object-cover"
-  style={{ opacity: 0.75 }}
-/>
-<div className="p-5 md:p-8">                <span
-                  style={{
-                    color,
-                    fontFamily: "'Space Mono', monospace",
-                    fontSize: "10px",
-                    textShadow: glow(color, 6),
-                  }}
-                >
-                  {item.tag}
-                </span>
-
-                <h2
-                  style={{
-                    color: "#e8edf2",
-                    fontSize: "1.4rem",
-                    marginTop: "10px",
-                    textShadow: glow(color, 8),
-                  }}
-                >
-                  {item.title}
-                </h2>
-
-                <p style={{ color: "#6b7a8d", marginTop: "10px" }}>
-                  {item.bio}
-                </p>
-              </div>
-            </article>
+              {tag}
+            </button>
           );
-        })()}
-
-        {/* GRID */}
-<div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
-            {filtered.slice(1).map((item) => {
-            const color = tagColors[item.tag] || "#00d4ff";
-
-            return (
-<article
-key={item.id}
-onClick={() => router.push(`/news/${item.id}`)}
-
-                className="group cursor-pointer"
-                style={{
-                  background: "#0e1520",
-                  border: "1px solid rgba(0,212,255,0.12)",
-                  borderRadius: "4px",
-                }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.borderColor = `${color}88`)
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.borderColor = "rgba(0,212,255,0.12)")
-                }
-              >
-             <img
-  src={item.image}
-  alt={item.title}
-className="w-full h-28 md:h-40 object-cover"
-  style={{ opacity: 0.7 }}
-/>
-
-                <div className="p-5">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Tag size={10} style={{ color }} />
-
-                    <span
-                      style={{
-                        color,
-                        fontFamily: "'Space Mono', monospace",
-                        fontSize: "10px",
-                        textShadow: glow(color, 6),
-                      }}
-                    >
-                      {item.tag}
-                    </span>
-                  </div>
-
-                  <h3
-  className="text-sm md:text-base"
-  style={{
-    color: "#e8edf2",
-    textShadow: glow(color, 6),
-  }}
->
-                    {item.title}
-                  </h3>
-
-                  <p
-  className="hidden md:block"
-  style={{
-    color: "#6b7a8d",
-    fontSize: "0.85rem",
-  }}
->
-  {item.bio}
-</p>
-                </div>
-              </article>
-            );
-          })}
-        </div>
+        })}
       </div>
+
+      {items.length === 0 && (
+        <p className="mt-16 text-[19px] text-muted">Nothing in this category yet.</p>
+      )}
+
+      {/* EVENT RULER: real posters strung along a dated line, newest first */}
+      {items.length > 0 && (
+        <section aria-label="Events on a timeline" className="mt-10">
+          <ol className="flex snap-x gap-5 overflow-x-auto pb-6 md:gap-6">
+            {items.map((item, index) => (
+              <li
+                key={item.id}
+                className="relative w-[64vw] shrink-0 snap-start sm:w-[44vw] md:w-0 md:min-w-[170px] md:flex-1"
+              >
+                <Reveal delay={index * 0.05} y={28}>
+                  <Link href={`/news/${item.id}`} className="group block">
+                    <Image
+                      src={item.image}
+                      alt={item.title.trim()}
+                      width={800}
+                      height={1000}
+                      priority={index < 3}
+                      sizes="(min-width: 768px) 20vw, 64vw"
+                      className="aspect-[4/5] w-full bg-surface object-contain transition-opacity duration-150 group-hover:opacity-90"
+                    />
+                    <div className="mt-5 border-t-2 border-control pt-4 group-hover:border-accent">
+                      <p className="text-[16px] font-semibold text-accent">
+                        {formatNewsDate(item.date)}
+                      </p>
+                      <p className="mt-1 font-display text-[22px] font-extrabold uppercase leading-[1] text-text group-hover:text-accent">
+                        {item.title.trim()}
+                      </p>
+                    </div>
+                  </Link>
+                </Reveal>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
+
+      {/* READING LIST: titles and summaries */}
+      {items.length > 0 && (
+        <section aria-label="All stories" className="mt-24 md:mt-36">
+          <ul className="flex flex-col gap-14 md:gap-20">
+            {items.map((item) => (
+              <li key={item.id} className="grid gap-3 md:grid-cols-[1fr_3fr] md:gap-10">
+                <Reveal className="md:contents">
+                  <p className="text-[16px] text-muted md:pt-3">
+                    {item.tag}
+                    <br />
+                    {formatNewsDate(item.date)} · {item.readTime}
+                  </p>
+                  <div>
+                    <Link
+                      href={`/news/${item.id}`}
+                      className="block font-display text-[clamp(36px,6vw,88px)] font-extrabold uppercase leading-[0.95] text-text hover:text-accent"
+                    >
+                      {item.title.trim()}
+                    </Link>
+                    {item.bio.trim() && (
+                      <p className="mt-4 max-w-2xl text-[19px] leading-[1.55] text-muted">
+                        {item.bio.trim()}
+                      </p>
+                    )}
+                  </div>
+                </Reveal>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
   );
 }

@@ -1,343 +1,245 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Github, Linkedin, Twitter } from "lucide-react";
+import { Github, Linkedin } from "lucide-react";
+import { Reveal } from "@/components/motion";
 import { team, advisors, roles } from "@/lib/team";
 
+type Member = (typeof team)[number];
+
+const filters = ["All", ...roles];
+
+// Member 6 is a hidden entry point. Seven clicks on that photo opens the files page.
+const SECRET_MEMBER_ID = 6;
+const SECRET_CLICK_COUNT = 7;
+
+const inGroup = (member: Member, role: string) => member.category.includes(role);
+
+function Links({ member }: { member: Member }) {
+  if (!member.github && !member.linkedin) return null;
+  return (
+    <div className="mt-4 flex gap-5">
+      {member.github && (
+        <a
+          href={member.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${member.name} on GitHub (opens in a new tab)`}
+          className="text-muted transition-colors duration-150 hover:text-accent"
+        >
+          <Github size={22} aria-hidden="true" />
+        </a>
+      )}
+      {member.linkedin && (
+        <a
+          href={member.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${member.name} on LinkedIn (opens in a new tab)`}
+          className="text-muted transition-colors duration-150 hover:text-accent"
+        >
+          <Linkedin size={22} aria-hidden="true" />
+        </a>
+      )}
+    </div>
+  );
+}
 
 export default function TeamPage() {
   const router = useRouter();
   const [activeRole, setActiveRole] = useState("All");
-const [secretClicks, setSecretClicks] = useState(0);
-    const filteredTeam =
-  activeRole === "All"
-    ? team
-    : team.filter(
-        (member) => member.category.includes(activeRole)
-      );
-        
-const handleSecretClick = (memberId: number) => {
-  if (memberId !== 6) return; 
+  const [, setSecretClicks] = useState(0);
 
-  setSecretClicks((prev) => {
-    const clicks = prev + 1;
+  const handleSecretClick = (memberId: number) => {
+    if (memberId !== SECRET_MEMBER_ID) return;
+    setSecretClicks((prev) => {
+      const clicks = prev + 1;
+      if (clicks === SECRET_CLICK_COUNT) {
+        router.push("/files");
+        return 0;
+      }
+      return clicks;
+    });
+  };
 
-    if (clicks === 7) {
-      router.push("/files");
-      return 0;
-    }
+  // Each member appears once. Anyone in the executive group is listed there first.
+  const executives = team.filter((member) => inGroup(member, "Executives"));
+  const others = roles
+    .filter((role) => role !== "Executives")
+    .map((role) => ({
+      role,
+      members: team.filter((member) => !inGroup(member, "Executives") && inGroup(member, role)),
+    }))
+    .filter((group) => group.members.length > 0);
 
-    return clicks;
-  });
-};
+  const showExecutives = activeRole === "All" || activeRole === "Executives";
+  const visibleOthers = others.filter((group) => activeRole === "All" || group.role === activeRole);
+  // A filtered committee also lists its executive coordinators, who are shown under Executives.
+  const filteredExecutives =
+    activeRole === "All" || activeRole === "Executives"
+      ? executives
+      : executives.filter((member) => inGroup(member, activeRole));
+
   return (
-    <div style={{ fontFamily: "'Inter', sans-serif", minHeight: "100vh" }}>
-      {/* Header */}
-      <div
-        className="pt-28 pb-16 px-6"
-        style={{ borderBottom: "1px solid rgba(0,212,255,0.1)" }}
-      >
-        <div className="max-w-6xl mx-auto">
+    <>
+      {/* HERO: the member count at poster size beside a photo */}
+      <section className="mx-auto grid max-w-[1280px] gap-8 px-5 pt-10 md:grid-cols-[7fr_5fr] md:items-end md:gap-12 md:px-10 md:pt-14">
+        <div>
+          <h1 className="text-[clamp(56px,9vw,136px)] leading-[0.9] text-text">Team</h1>
           <p
-            className="mb-3 tracking-widest uppercase"
-            style={{ fontFamily: "'Space Mono', monospace", fontSize: "11px", color: "#00d4ff" }}
+            aria-label={`${team.length} members`}
+            className="mt-6 font-display text-[clamp(140px,28vw,400px)] font-extrabold leading-[0.85] text-accent md:mt-8"
           >
-            — The People
+            {team.length}
           </p>
-          <h1
-            style={{
-              fontFamily: "'Space Mono', monospace",
-              fontSize: "2.5rem",
-              color: "#e8edf2",
-              lineHeight: 1.1,
-            }}
-          >
-            Meet the Team
-          </h1>
-          <p className="mt-4 max-w-xl" style={{ color: "#6b7a8d", lineHeight: 1.7 }}>
-            Eight students running the IoT Club — each owning a domain from hardware to community.
+          <p className="mt-5 max-w-md text-[19px] leading-[1.5] text-muted">
+            Members across the club&apos;s groups, from hardware to outreach.
           </p>
         </div>
-     
-    </div>
+        <Image
+          src="/media/gallery/iot-photo-6.jpeg"
+          alt="Two club members at an event stand with an inflatable capybara costume"
+          width={1080}
+          height={1413}
+          priority
+          sizes="(min-width: 768px) 40vw, 100vw"
+          className="aspect-[4/3] w-full object-cover object-[center_35%] md:aspect-[4/5]"
+        />
+      </section>
 
-      <div className="max-w-6xl mx-auto px-6 py-16">
-
-        {/* ROLE FILTERS */}
-<div className="flex flex-wrap gap-2 mb-10">
-  {roles.map((role) => {
-    const active = activeRole === role;
-
-    return (
-      <button
-        key={role}
-        onClick={() => setActiveRole(role)}
-        className="px-4 py-1.5 transition-all duration-200"
-        style={{
-          fontFamily: "'Space Mono', monospace",
-          fontSize: "11px",
-          letterSpacing: "0.1em",
-          textTransform: "uppercase",
-          borderRadius: "2px",
-          border: "1px solid",
-          borderColor: active
-            ? "#00d4ff"
-            : "rgba(0,212,255,0.2)",
-          color: active
-            ? "#00d4ff"
-            : "#6b7a8d",
-          background: active
-            ? "rgba(0,212,255,0.08)"
-            : "transparent",
-          boxShadow: active
-            ? "0 0 10px rgba(0,212,255,0.35)"
-            : "none",
-          textShadow: active
-            ? "0 0 8px rgba(0,212,255,0.8)"
-            : "none",
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.boxShadow =
-            "0 0 10px rgba(0,212,255,0.45), 0 0 20px rgba(0,212,255,0.2)";
-
-          e.currentTarget.style.textShadow =
-            "0 0 8px rgba(0,212,255,0.8)";
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.boxShadow = active
-            ? "0 0 10px rgba(0,212,255,0.35)"
-            : "none";
-
-          e.currentTarget.style.textShadow = active
-            ? "0 0 8px rgba(0,212,255,0.8)"
-            : "none";
-        }}
-      >
-        {role}
-      </button>
-    );
-  })}
-</div>
-        {/* Core team grid */}
-<div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-20">
-  {filteredTeam.map((member) => (            
-  
-  
-  <div
-  key={member.id}
-  className="overflow-hidden transition-all duration-300 group hover:-translate-y-2"
-  style={{
-    background: "linear-gradient(180deg, #101927 0%, #0b111b 100%)",
-    border: "1px solid rgba(0,212,255,0.12)",
-    borderRadius: "8px",
-    boxShadow: "0 10px 30px rgba(0,0,0,0.25)",
-  }}
-onMouseEnter={(e) => {
-  e.currentTarget.style.borderColor =
-    "rgba(0,212,255,0.35)";
-  e.currentTarget.style.boxShadow =
-    "0 12px 30px rgba(0,0,0,0.35)";
-}}
-
-onMouseLeave={(e) => {
-  e.currentTarget.style.borderColor =
-    "rgba(0,212,255,0.12)";
-  e.currentTarget.style.boxShadow = "none";
-}}
-            >
-              {/* Photo */}
-
-<div className="h-32 md:h-56 overflow-hidden bg-slate-900 relative transition-all duration-500"
-
-style={{
-    boxShadow:
-      secretClicks > 0 && member.id === 6
-        ? "0 0 12px rgba(0,212,255,0.08)"
-        : "none",
-  }}
-  onClick={() => handleSecretClick(member.id)}
->
-  <img
-    src={member.img}
-    alt={member.name}
-    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-    style={{
-      filter: "grayscale(30%)",
-      opacity: 0.85,
-    }}
-  />
-
-  <div
-    className="absolute inset-0"
-    style={{
-      background:
-        "linear-gradient(to top, rgba(14,21,32,0.9) 0%, transparent 60%)",
-    }}
-  />
-</div>
-              {/* Info */}
-<div className="p-3 md:p-5">
-                 <h3
-  className="text-sm md:text-base"
-  style={{
-    fontFamily: "'Space Mono', monospace",
-    fontWeight: 700,
-    color: "#e8edf2",
-    marginBottom: "2px",
-  }}
->
-                  {member.name}
-                </h3>
-                <p
-                  className="mb-3"
-                  style={{
-                    fontFamily: "'Space Mono', monospace",
-                    fontSize: "11px",
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                    color: "#00d4ff",
-                  }}
-                >
-                  {member.role}
-                </p>
-<p className="hidden md:block mb-4"                
-                style={{ fontSize: "0.825rem", color: "#6b7a8d", lineHeight: 1.6 }}>
-                  {member.bio}
-                </p>
-
-                {/* Skills */}
-                <div className="flex flex-wrap gap-2 mb-4">
-  {member.skills.map((skill, index) => (
-
-    <span
-
-      key={skill}
-      className={index >= 2 ? "hidden md:inline-block px-2 py-0.5" : "px-2 py-0.5"}
-      style={{
-        fontFamily: "'Space Mono', monospace",
-        fontSize: "10px",
-        color: "#6b7a8d",
-        background: "#111827",
-        border: "1px solid rgba(0,212,255,0.12)",
-        borderRadius: "2px",
-      }}
-    >
-      {skill}
-    </span>
-  ))}
-</div>
-                {/* Social links */}
-<div
-  className="flex gap-3 pt-3 mt-3"
-  style={{
-    borderTop: "1px solid rgba(0,212,255,0.08)",
-  }}
->                  {member.github && (
-                    <a
-                      href={member.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="transition-colors"
-                      style={{ color: "#6b7a8d" }}
-                      onMouseEnter={(e) => (e.currentTarget.style.color = "#00d4ff")}
-                      onMouseLeave={(e) => (e.currentTarget.style.color = "#6b7a8d")}
-                    >
-                      <Github size={15} />
-                    </a>
-                  )}
-                  {member.linkedin && (
-                    <a
-                      href={member.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="transition-colors"
-                      style={{ color: "#6b7a8d" }}
-                      onMouseEnter={(e) => (e.currentTarget.style.color = "#00d4ff")}
-                      onMouseLeave={(e) => (e.currentTarget.style.color = "#6b7a8d")}
-                    >
-                      <Linkedin size={15} />
-                    </a>
-                  )}
-                  
-                  
-                {/*}
-                  {member.twitter && (
-                    <a
-                      href={member.twitter}
-                      className="transition-colors"
-                      style={{ color: "#6b7a8d" }}
-                      onMouseEnter={(e) => (e.currentTarget.style.color = "#00d4ff")}
-                      onMouseLeave={(e) => (e.currentTarget.style.color = "#6b7a8d")}
-                    >
-                      <Twitter size={15} />
-                    </a>
-                  )}
-                  
-                */}
-
-                
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Faculty advisor */}
-        <div style={{ borderTop: "1px solid rgba(0,212,255,0.1)", paddingTop: "3rem" }}>
-          <p
-            className="mb-8 tracking-widest uppercase"
-            style={{ fontFamily: "'Space Mono', monospace", fontSize: "11px", color: "#00d4ff" }}
-          >
-            Faculty Advisor
-          </p>
-          {advisors.map((a) => (
-            <div
-              key={a.id}
-              className="flex items-center gap-6 p-6 max-w-xl"
-              style={{
-                background: "#0e1520",
-                border: "1px solid rgba(0,212,255,0.12)",
-                borderRadius: "4px",
-              }}
-            >
-              <div
-                className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 bg-slate-800"
-                style={{ border: "2px solid rgba(0,212,255,0.25)" }}
+      <div className="mx-auto max-w-[1280px] px-5 md:px-10">
+        <div
+          role="group"
+          aria-label="Filter by group"
+          className="mt-16 flex gap-6 overflow-x-auto pb-1 md:mt-24"
+        >
+          {filters.map((role) => {
+            const active = activeRole === role;
+            return (
+              <button
+                key={role}
+                type="button"
+                aria-pressed={active}
+                onClick={() => setActiveRole(role)}
+                className={`shrink-0 py-2 text-[18px] font-medium transition-colors duration-150 ${
+                  active ? "text-accent underline decoration-2 underline-offset-8" : "text-muted hover:text-text"
+                }`}
               >
-                <img src={a.img} alt={a.name} className="w-full h-full object-cover" style={{ filter: "grayscale(30%)" }} />
-              </div>
-              <div>
-                <h3
-                  style={{
-                    fontFamily: "'Space Mono', monospace",
-                    fontSize: "0.9rem",
-                    fontWeight: 700,
-                    color: "#e8edf2",
-                    marginBottom: "2px",
-                  }}
-                >
-                  {a.name}
-                </h3>
-                <p
-                  className="mb-1"
-                  style={{
-                    fontFamily: "'Space Mono', monospace",
-                    fontSize: "10px",
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                    color: "#00d4ff",
-                  }}
-                >
-                  {a.role}
-                </p>
-                <p style={{ fontSize: "0.8rem", color: "#6b7a8d" }}>{a.dept}</p>
-                <p className="mt-1" style={{ fontSize: "0.8rem", color: "#6b7a8d", fontStyle: "italic" }}>{a.note}</p>
-              </div>
-            </div>
-          ))}
+                {role}
+              </button>
+            );
+          })}
         </div>
+
+        {/* EXECUTIVES: large portraits with bios */}
+        {(showExecutives || filteredExecutives.length > 0) && filteredExecutives.length > 0 && (
+          <section aria-labelledby="executives" className="mt-12">
+            <h2 id="executives" className="text-[clamp(44px,7vw,104px)] leading-[0.92] text-text">
+              {showExecutives ? "Executives" : `${activeRole} coordinators`}
+            </h2>
+            <ul className="mt-10 grid grid-cols-2 gap-x-5 gap-y-14 md:grid-cols-3 md:gap-x-8">
+              {filteredExecutives.map((member, index) => (
+                <li key={member.id}>
+                  <Reveal delay={(index % 3) * 0.06} y={24}>
+                    <button
+                      type="button"
+                      tabIndex={-1}
+                      aria-hidden="true"
+                      onClick={() => handleSecretClick(member.id)}
+                      className="block w-full cursor-default"
+                    >
+                      <Image
+                        src={member.img}
+                        alt=""
+                        width={700}
+                        height={875}
+                        sizes="(min-width: 768px) 380px, 50vw"
+                        className="aspect-[4/5] w-full bg-surface object-cover"
+                      />
+                    </button>
+                    <h3 className="mt-4 text-[clamp(24px,2.6vw,34px)] leading-[1] text-text">
+                      {member.name}
+                    </h3>
+                    <p className="mt-1 text-[16px] font-medium text-accent">{member.role}</p>
+                    <p className="mt-3 hidden text-[16px] leading-[1.55] text-muted md:block">
+                      {member.bio}
+                    </p>
+                    <Links member={member} />
+                  </Reveal>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {/* COMMITTEES: compact listings */}
+        {visibleOthers.map((group) => (
+          <section key={group.role} aria-labelledby={`group-${group.role}`} className="mt-24 md:mt-32">
+            <h2 id={`group-${group.role}`} className="text-[clamp(44px,7vw,104px)] leading-[0.92] text-text">
+              {group.role}
+            </h2>
+            <ul className="mt-8 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-4 md:gap-x-6">
+              {group.members.map((member) => (
+                <li key={member.id}>
+                  <button
+                    type="button"
+                    tabIndex={-1}
+                    aria-hidden="true"
+                    onClick={() => handleSecretClick(member.id)}
+                    className="block w-full cursor-default"
+                  >
+                    <Image
+                      src={member.img}
+                      alt=""
+                      width={400}
+                      height={500}
+                      sizes="(min-width: 768px) 280px, 50vw"
+                      className="aspect-[4/5] w-full bg-surface object-cover"
+                    />
+                  </button>
+                  <h3 className="mt-3 text-[22px] leading-[1.05] text-text">{member.name}</h3>
+                  <p className="mt-1 text-[16px] font-medium text-accent">{member.role}</p>
+                  <p className="mt-1 text-[16px] text-muted">{member.skills.join(" · ")}</p>
+                  <Links member={member} />
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+
+        {/* ADVISOR */}
+        {advisors.length > 0 && activeRole === "All" && (
+          <section aria-labelledby="advisors" className="mt-28 md:mt-40">
+            <h2 id="advisors" className="text-[clamp(44px,7vw,104px)] leading-[0.92] text-text">
+              Faculty advisor
+            </h2>
+            <ul className="mt-8 flex flex-col gap-8">
+              {advisors.map((advisor) => (
+                <li key={advisor.id} className="flex max-w-xl items-start gap-6">
+                  {advisor.img.trim() && (
+                    <Image
+                      src={advisor.img}
+                      alt={advisor.name}
+                      width={160}
+                      height={160}
+                      sizes="96px"
+                      className="h-24 w-24 shrink-0 bg-surface object-cover"
+                    />
+                  )}
+                  <div>
+                    <h3 className="text-[28px] leading-[1] text-text">{advisor.name}</h3>
+                    <p className="mt-1 text-[16px] font-medium text-accent">{advisor.role}</p>
+                    <p className="mt-1 text-[16px] text-muted">{advisor.dept}</p>
+                    {advisor.note && <p className="mt-1 text-[16px] text-muted">{advisor.note}</p>}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
       </div>
-    </div>
+    </>
   );
 }

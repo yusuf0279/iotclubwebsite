@@ -1,10 +1,133 @@
-"use client";
+import Image from "next/image";
+import Link from "next/link";
+import { ButtonLink, Reveal } from "@/components/motion";
+import { roles } from "@/lib/team";
+import { allNews } from "@/lib/news";
+import { formatNewsDate } from "@/lib/format";
 
+export const metadata = {
+  title: "About",
+  description:
+    "What the AUS IoT Club builds, how its members are organised, and what it has done since launch.",
+};
+
+// Parse as numbers so "2026-09-5" sorts before "2026-09-15".
+const toDay = (value: string) => {
+  const [year, month, day] = value.split("-").map(Number);
+  return Date.UTC(year, month - 1, day);
+};
+
+const timeline = [...allNews].sort((a, b) => toDay(a.date) - toDay(b.date));
+
+const triptych = [
+  {
+    src: "/media/gallery/robot-cultural-event.jpeg",
+    alt: "A club member posing beside the club robot at a cultural event stand",
+  },
+  {
+    src: "/media/gallery/iot-photo-5.jpeg",
+    alt: "A club member pointing up at the Internet of Things sign above the club's booth",
+  },
+  {
+    src: "/media/gallery/iot-photo-2.jpeg",
+    alt: "Club members posing together at a campus event",
+  },
+];
 
 export default function AboutPage() {
   return (
-    <main>
-      <h1>About Us WIP</h1>
-    </main>
+    <>
+      {/* HERO: type over a triptych of photos */}
+      <section className="mx-auto max-w-[1280px] px-5 pt-10 md:px-10 md:pt-14">
+        <h1 className="text-[clamp(56px,13vw,200px)] leading-[0.9] text-text">About the club</h1>
+        <div className="mt-8 grid grid-cols-3 gap-2 md:mt-12 md:gap-5">
+          {triptych.map((photo, index) => (
+            <Reveal key={photo.src} delay={index * 0.06} y={32}>
+              <Image
+                src={photo.src}
+                alt={photo.alt}
+                width={900}
+                height={1200}
+                priority={index === 0}
+                sizes="(min-width: 1280px) 400px, 33vw"
+                className="aspect-[3/5] w-full object-cover md:aspect-[3/4]"
+              />
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* STATEMENT */}
+      <section className="mx-auto max-w-[1280px] px-5 pt-28 md:px-10 md:pt-44">
+        <Reveal>
+          <p className="max-w-[22ch] text-[clamp(30px,5vw,76px)] font-medium leading-[1.08] text-text sm:max-w-[28ch] md:max-w-[26ch]">
+            A student community for people who want to build things that sense, connect and act.
+          </p>
+        </Reveal>
+        <Reveal delay={0.06}>
+          <p className="mt-10 max-w-xl text-[19px] leading-[1.6] text-muted">
+            Members work on embedded hardware, software and automation, and they learn by building
+            together: in workshops, at hackathons and at campus events.
+          </p>
+        </Reveal>
+      </section>
+
+      {/* GROUPS */}
+      <section aria-labelledby="groups" className="mx-auto max-w-[1280px] px-5 pt-28 md:px-10 md:pt-44">
+        <h2 id="groups" className="text-[clamp(20px,2vw,26px)] font-semibold normal-case tracking-normal text-muted">
+          How the club is organised
+        </h2>
+        <ul className="mt-6 flex flex-wrap gap-x-[0.35em] gap-y-0 font-display text-[clamp(44px,8.4vw,128px)] font-extrabold uppercase leading-[0.98] text-text">
+          {roles.map((role, index) => (
+            <li key={role}>
+              {role}
+              {index < roles.length - 1 && (
+                <span aria-hidden="true" className="text-accent">
+                  {" "}
+                  /
+                </span>
+              )}
+            </li>
+          ))}
+        </ul>
+        <div className="mt-10">
+          <ButtonLink href="/team" variant="ghost">
+            Meet the team
+          </ButtonLink>
+        </div>
+      </section>
+
+      {/* HISTORY */}
+      <section aria-labelledby="history" className="mx-auto max-w-[1280px] px-5 pt-28 md:px-10 md:pt-44">
+        <div className="grid gap-10 md:grid-cols-[1fr_2fr] md:gap-16">
+          <div>
+            <h2 id="history" className="text-[clamp(20px,2vw,26px)] font-semibold normal-case tracking-normal text-muted">
+              Since launch
+            </h2>
+            <p className="mt-3 font-display text-[clamp(96px,17vw,260px)] font-extrabold leading-[0.85] text-accent md:sticky md:top-10">
+              2026
+            </p>
+          </div>
+
+          <ol className="flex flex-col gap-12 md:gap-16">
+            {timeline.map((item) => (
+              <li key={item.id}>
+                <Reveal>
+                  <time dateTime={item.date} className="text-[16px] font-medium text-accent">
+                    {formatNewsDate(item.date)} · {item.tag}
+                  </time>
+                  <Link
+                    href={`/news/${item.id}`}
+                    className="mt-2 block font-display text-[clamp(32px,4.4vw,64px)] font-extrabold uppercase leading-[0.98] text-text hover:text-accent"
+                  >
+                    {item.title.trim()}
+                  </Link>
+                </Reveal>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+    </>
   );
 }

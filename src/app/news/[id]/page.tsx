@@ -1,174 +1,64 @@
-import { allNews } from "@/lib/news";
-import { notFound } from "next/navigation";
-import { Tag, ArrowLeft } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import { allNews } from "@/lib/news";
+import { formatNewsDate } from "@/lib/format";
 
-const tagColors: Record<string, string> = {
-  Workshop: "#00d4ff",
-  Announcement: "#f59e0b",
-  Talk: "#a78bfa",
-  Project: "#34d399",
-  Event: "#f472b6",
-};
+type Params = { params: Promise<{ id: string }> };
 
-export default async function NewsDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { id } = await params;
+  const item = allNews.find((news) => news.id.toString() === id);
+  if (!item) return { title: "Not found" };
+  return {
+    title: item.title.trim(),
+    description: item.bio.trim() || `${item.tag} from the AUS IoT Club, ${formatNewsDate(item.date)}.`,
+  };
+}
 
-  const item = allNews.find(
-    (news) => news.id.toString() === id
-  );
+export default async function NewsDetailPage({ params }: Params) {
+  const { id } = await params;
+  const item = allNews.find((news) => news.id.toString() === id);
 
   if (!item) {
     notFound();
   }
 
-  const color = tagColors[item.tag] || "#00d4ff";
-
-  const glow = (strength = 8) =>
-    `0 0 ${strength}px ${color}88`;
+  const description = item.bio.trim();
 
   return (
-    <main
-      className="min-h-screen pt-28 pb-20"
-      style={{
-        background: "#080c10",
-        fontFamily: "'Inter', sans-serif",
-      }}
-    >
-      <div className="max-w-5xl mx-auto px-6">
+    <article className="mx-auto max-w-[1280px] px-5 pb-8 pt-10 md:px-10 md:pt-14">
+      <Link href="/news" className="inline-block text-[18px] font-semibold text-accent hover:underline">
+        ← All news
+      </Link>
 
-        {/* BACK */}
-        <Link
-          href="/news"
-          className="
-          inline-flex
-          items-center
-          gap-2
-          mb-8
-          text-sm
-          text-[#6b7a8d]
-          hover:text-[#00d4ff]
-          transition-colors
-          "
-        >
-          <ArrowLeft size={14} />
-          Back to News
-        </Link>
+      <div className="mt-8 grid gap-10 md:grid-cols-[5fr_7fr] md:gap-16">
+        <Image
+          src={item.image}
+          alt={item.title.trim()}
+          width={1200}
+          height={1500}
+          priority
+          sizes="(min-width: 768px) 40vw, 100vw"
+          className="aspect-[4/5] w-full bg-surface object-contain md:sticky md:top-10 md:self-start"
+        />
 
-
-        {/* ARTICLE */}
-        <article
-          style={{
-            background: "#0e1520",
-            border: "1px solid rgba(0,212,255,0.12)",
-            borderRadius: "4px",
-            overflow: "hidden",
-          }}
-        >
-
-          {/* IMAGE */}
-          <img
-            src={item.image}
-            alt={item.title}
-            className="
-            w-full
-            h-64
-            md:h-[420px]
-            object-cover
-            "
-            style={{
-              opacity: 0.8,
-            }}
-          />
-
-
-          {/* CONTENT */}
-          <div className="p-6 md:p-10">
-
-            <div
-              className="
-              flex
-              items-center
-              gap-2
-              mb-5
-              "
-            >
-              <Tag
-                size={13}
-                style={{
-                  color,
-                }}
-              />
-
-              <span
-                style={{
-                  color,
-                  fontFamily: "'Space Mono', monospace",
-                  fontSize: "11px",
-                  letterSpacing: "0.1em",
-                  textTransform: "uppercase",
-                  textShadow: glow(),
-                }}
-              >
-                {item.tag}
-              </span>
-
-            </div>
-
-
-            <h1
-              style={{
-                color: "#e8edf2",
-                fontFamily: "'Space Mono', monospace",
-                fontSize: "clamp(1.8rem,5vw,3rem)",
-                lineHeight: 1.2,
-                textShadow: glow(12),
-              }}
-            >
-              {item.title}
-            </h1>
-
-
-            <div
-              className="
-              mt-6
-              text-base
-              leading-8
-              "
-              style={{
-                color:"#9aa8b8",
-              }}
-            >
-              {item.bio}
-            </div>
-
-
-            {/* Extra article body placeholder */}
-            <div
-              className="
-              mt-8
-              leading-8
-              "
-              style={{
-                color:"#6b7a8d",
-              }}
-            >
-              This update covers the latest activities, developments,
-              and progress from the IoT Club community.
-              More details will be added soon.
-            </div>
-
-
-          </div>
-
-        </article>
-
+        <div>
+          <p className="text-[16px] font-medium text-accent">
+            {item.tag} · {formatNewsDate(item.date)} · {item.readTime}
+          </p>
+          <h1 className="mt-4 text-[clamp(48px,8vw,128px)] leading-[0.92] text-text">
+            {item.title.trim()}
+          </h1>
+          {description && (
+            <p className="mt-10 max-w-2xl text-[clamp(20px,2vw,26px)] leading-[1.5] text-text">
+              {description}
+            </p>
+          )}
+          <p className="mt-10 text-[16px] text-muted">Posted by {item.author}.</p>
+        </div>
       </div>
-    </main>
+    </article>
   );
 }

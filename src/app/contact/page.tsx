@@ -1,228 +1,92 @@
-"use client";
+import Image from "next/image";
+import { ButtonLink, Reveal } from "@/components/motion";
+import { APPLICATIONS_OPEN, APPLICATION_URL, CYCLE, DEADLINE } from "@/lib/applications";
 
-const APPLICATIONS_OPEN = false;
-
-const APPLICATION_URL =
-  "https://docs.google.com/forms/d/e/1FAIpQLScUt5c1mp8MHQNj48T8zeBMvSxqnkjAa-ycJI_FVEb6udqawg/viewform?usp=sharing&ouid=115100477030477821907";
-
-const DEADLINE = "September 20, 2026 • 11:59 PM (GST / UAE time)";
+export const metadata = {
+  title: "Join",
+  description: `How to join the AUS IoT Club: ${CYCLE} recruitment status, what members get, and how to get in touch.`,
+};
 
 const reasons = [
   {
-    title: "Hands-On Hardware",
-    desc: "Build real systems using microcontrollers, sensors, robotics, and embedded devices.",
+    title: "Hands-on hardware",
+    desc: "Build real systems using microcontrollers, sensors, robotics and embedded devices.",
   },
   {
-    title: "Project Teams",
-    desc: "Gain practical experience through workshops, team projects, and technical challenges.",
+    title: "Project teams",
+    desc: "Gain practical experience through workshops, team projects and technical challenges.",
   },
   {
-    title: "Industry Exposure",
-    desc: "Connect with engineers, alumni, and technology companies.",
+    title: "Industry exposure",
+    desc: "Connect with engineers, alumni and technology companies.",
   },
   {
-    title: "Leadership Opportunities",
-    desc: "Lead workshops, events, and technical initiatives.",
+    title: "Leadership",
+    desc: "Lead workshops, events and technical initiatives.",
   },
 ];
 
 export default function JoinPage() {
   return (
-    <div
-      style={{
-        fontFamily: "'Inter', sans-serif",
-        minHeight: "100vh",
-        background:
-          "radial-gradient(circle at top, rgba(0,212,255,.08), transparent 45%)",
-      }}
-    >
-      <div
-        style={{
-          position: "fixed",
-          inset: 0,
-          backgroundImage: `
-            linear-gradient(rgba(0,212,255,.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0,212,255,.03) 1px, transparent 1px)
-          `,
-          backgroundSize: "40px 40px",
-          pointerEvents: "none",
-          zIndex: 0,
-        }}
-      />
+    <>
+      {/* HERO: photo left, type right */}
+      <section className="mx-auto grid max-w-[1280px] gap-8 px-5 pt-10 md:grid-cols-[5fr_7fr] md:items-end md:gap-14 md:px-10 md:pt-14">
+        <Image
+          src="/media/gallery/iot-photo-5.jpeg"
+          alt="A club member pointing up at the Internet of Things sign above the club's booth"
+          width={902}
+          height={1600}
+          priority
+          sizes="(min-width: 768px) 40vw, 100vw"
+          className="aspect-[4/3] w-full object-cover object-[center_28%] md:aspect-[4/5]"
+        />
 
-      <div className="relative z-10">
-        {/* HERO */}
-        <section className="pt-32 pb-24 px-6">
-          <div className="max-w-6xl mx-auto text-center">
-            <p
-              style={{
-                fontFamily: "'Space Mono', monospace",
-                color: "#00d4ff",
-                letterSpacing: ".2em",
-                textTransform: "uppercase",
-                fontSize: "12px",
-              }}
-            >
-              Internet of Things Club
+        <div>
+          <h1 className="text-[clamp(64px,10.5vw,168px)] leading-[0.9] text-text">Join the club</h1>
+          <p className="mt-8 max-w-xl text-[clamp(19px,1.9vw,24px)] leading-[1.45] text-muted">
+            A community of students building devices, autonomous systems and connected technology
+            that solves real problems.
+          </p>
+
+          <div className="mt-10">
+            <p className="font-display text-[clamp(32px,3.6vw,52px)] font-extrabold uppercase leading-[0.95] text-text">
+              {APPLICATIONS_OPEN ? "Applications are open" : "Applications are closed"}
+            </p>
+            <p className="mt-3 text-[17px] text-muted">
+              {CYCLE} recruitment cycle. Deadline: {DEADLINE}.
             </p>
 
-            <h1
-              className="mt-6"
-              style={{
-                fontFamily: "'Space Mono', monospace",
-                fontSize: "clamp(3rem,8vw,5.5rem)",
-                color: "#e8edf2",
-                textShadow:
-                  "0 0 20px rgba(0,212,255,.15), 0 0 40px rgba(0,212,255,.1)",
-                lineHeight: 1,
-              }}
-            >
-              Build The
-              <br />
-              Future.
-            </h1>
-
-            <p
-              className="mx-auto mt-8 max-w-3xl"
-              style={{
-                color: "#6b7a8d",
-                fontSize: "1.1rem",
-                lineHeight: 1.8,
-              }}
-            >
-              Join a community of builders creating intelligent devices,
-              autonomous systems, and connected technologies that solve
-              real-world problems.
-            </p>
-
-            <div className="mt-12">
-              <a
-                href={APPLICATION_URL}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center justify-center px-10 py-4 transition-all duration-300 hover:scale-105 hover:-translate-y-1"
-                style={{
-                  textShadow: "0 0 8px rgba(255,255,255,.3)",
-                  background: APPLICATIONS_OPEN ? "#15d4ff" : "#ef4444",
-                  color: "#080c10",
-                  fontFamily: "'Space Mono', monospace",
-                  letterSpacing: ".1em",
-                  textTransform: "uppercase",
-                  fontWeight: 700,
-                  borderRadius: "6px",
-                  boxShadow: APPLICATIONS_OPEN
-                    ? "0 0 25px rgba(0,212,255,.15)"
-                    : "0 0 25px rgba(239,68,68,.45)",
-                  pointerEvents: APPLICATIONS_OPEN ? "auto" : "none",
-                }}
-              >
-                {APPLICATIONS_OPEN ? "Apply Now" : "Applications Closed"}
-              </a>
+            <div className="mt-6">
+              {APPLICATIONS_OPEN ? (
+                <ButtonLink href={APPLICATION_URL} external>
+                  Apply now (opens a form)
+                </ButtonLink>
+              ) : (
+                <ButtonLink href="mailto:iotclub@aus.edu" variant="ghost">
+                  Email the club
+                </ButtonLink>
+              )}
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* APPLICATION STATUS */}
-        <section className="px-6">
-          <div
-            className="max-w-5xl mx-auto p-8 md:p-10"
-            style={{
-              position: "relative",
-              overflow: "hidden",
-              background: APPLICATIONS_OPEN
-                ? "rgba(34,197,94,.06)"
-                : "rgba(239,68,68,.06)",
-              border: APPLICATIONS_OPEN
-                ? "1px solid rgba(34,197,94,.3)"
-                : "1px solid rgba(239,68,68,.3)",
-              borderRadius: "12px",
-              boxShadow: APPLICATIONS_OPEN
-                ? "0 0 40px rgba(34,197,94,.12)"
-                : "0 0 40px rgba(239,68,68,.12)",
-            }}
-          >
-            <div
-              style={{
-                position: "absolute",
-                inset: 0,
-                background:
-                  "linear-gradient(90deg, transparent, rgba(255,255,255,.03), transparent)",
-                pointerEvents: "none",
-              }}
-            />
-            <h2
-              style={{
-                fontFamily: "'Space Mono', monospace",
-                color: APPLICATIONS_OPEN ? "#22c55e" : "#ef4444",
-              }}
-            >
-              {APPLICATIONS_OPEN
-                ? "🟢 Applications Open"
-                : "🔴 Applications Closed"}
-            </h2>
-
-            <p className="mt-4" style={{ color: "#e8edf2" }}>
-              Fall 2026 Recruitment Cycle
-            </p>
-
-            <p className="mt-2" style={{ color: "#6b7a8d" }}>
-              Deadline: {DEADLINE}
-            </p>
-          </div>
-        </section>
-
-        {/* WHY JOIN */}
-        <section className="px-6 pt-28 pb-24">
-          <div className="max-w-6xl mx-auto">
-            <h2
-              className="mb-10"
-              style={{
-                fontFamily: "'Space Mono', monospace",
-                color: "#e8edf2",
-                fontSize: "2rem",
-              }}
-            >
-              <span style={{ color: "#00d4ff" }}>//</span> Why Join?
-            </h2>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              {reasons.map((reason) => (
-                <div
-                  key={reason.title}
-                  className="group p-6 transition-all duration-300 hover:-translate-y-2"
-                  style={{
-                    background: "#0e1520",
-                    border: "1px solid rgba(0,212,255,.15)",
-                    borderRadius: "10px",
-                    cursor: "default",
-                    boxShadow: "0 0 0 rgba(0,212,255,0)",
-                  }}
-                >
-                  <h3
-                    className="transition-all duration-300 group-hover:text-cyan-300"
-                    style={{
-                      color: "#00d4ff",
-                      fontFamily: "'Space Mono', monospace",
-                    }}
-                  >
-                    {reason.title}
-                  </h3>
-
-                  <p
-                    className="mt-3"
-                    style={{
-                      color: "#6b7a8d",
-                      lineHeight: 1.7,
-                    }}
-                  >
-                    {reason.desc}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
+      {/* WHY JOIN */}
+      <section aria-labelledby="why-join" className="mx-auto max-w-[1280px] px-5 pt-28 md:px-10 md:pt-44">
+        <h2 id="why-join" className="text-[clamp(20px,2vw,26px)] font-semibold normal-case tracking-normal text-muted">
+          Why join
+        </h2>
+        <dl className="mt-8 grid gap-x-16 gap-y-14 md:grid-cols-2">
+          {reasons.map((reason, index) => (
+            <Reveal key={reason.title} delay={(index % 2) * 0.06}>
+              <dt className="font-display text-[clamp(44px,6vw,88px)] font-extrabold uppercase leading-[0.92] text-text">
+                {reason.title}
+              </dt>
+              <dd className="mt-4 max-w-md text-[19px] leading-[1.55] text-muted">{reason.desc}</dd>
+            </Reveal>
+          ))}
+        </dl>
+      </section>
+    </>
   );
 }

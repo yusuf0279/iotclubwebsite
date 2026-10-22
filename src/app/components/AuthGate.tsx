@@ -4,10 +4,14 @@
 import React, { useState } from 'react';
 import { ACCOUNTS } from '@/lib/auth';
 import { UserSession } from '@/lib/types';
+import IotMark from '@/components/mark';
 
 interface AuthGateProps {
   onLogin: (session: UserSession) => void;
 }
+
+const fieldClass =
+  'mt-2 h-12 w-full border border-control bg-surface px-4 text-[17px] text-text focus:border-accent focus:outline-none';
 
 export default function AuthGate({ onLogin }: AuthGateProps) {
   const [username, setUsername] = useState('tech_team');
@@ -32,30 +36,39 @@ export default function AuthGate({ onLogin }: AuthGateProps) {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl">
-        <div className="text-center mb-6">
-          <span className="text-xs font-bold tracking-widest text-indigo-400 uppercase bg-indigo-950 px-3 py-1 rounded border border-indigo-800">
-            IoT Club Committee Portal
-          </span>
-          <h1 className="text-2xl font-bold text-white mt-3">Committee Sign In</h1>
-          <p className="text-xs text-slate-400 mt-1">
-            Log in with your committee credentials to access tasks and points
-          </p>
-        </div>
+    <div className="mx-auto grid min-h-[calc(100vh-3.5rem)] max-w-[1280px] gap-10 px-5 pb-16 pt-10 md:grid-cols-[1fr_1fr] md:items-center md:gap-16 md:px-10 lg:min-h-screen">
+      {/* Visual: the club mark on the club grid */}
+      <div
+        aria-hidden="true"
+        className="flex aspect-[16/9] items-center justify-center text-accent md:aspect-square"
+        style={{
+          backgroundImage:
+            'linear-gradient(var(--divider) 1px, transparent 1px), linear-gradient(90deg, var(--divider) 1px, transparent 1px)',
+          backgroundSize: '48px 48px',
+        }}
+      >
+        <IotMark className="h-[62%] w-[62%] max-h-72" />
+      </div>
 
-        <form onSubmit={handleLogin} className="space-y-4">
+      <div>
+        <h1 className="text-[clamp(56px,8vw,120px)] leading-[0.9] text-text">Committee sign in</h1>
+        <p className="mt-6 max-w-md text-[18px] leading-[1.5] text-muted">
+          Sign in with your committee account to see tasks and points.
+        </p>
+
+        <form onSubmit={handleLogin} className="mt-10 max-w-md space-y-6">
           <div>
-            <label className="block text-xs font-medium text-slate-400 mb-1">
-              Select Account / Username
+            <label htmlFor="account" className="text-[16px] font-medium text-text">
+              Account
             </label>
             <select
+              id="account"
               value={username}
               onChange={(e) => {
                 setUsername(e.target.value);
                 setError('');
               }}
-              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500"
+              className={fieldClass}
             >
               {ACCOUNTS.map((acc) => (
                 <option key={acc.username} value={acc.username}>
@@ -66,32 +79,37 @@ export default function AuthGate({ onLogin }: AuthGateProps) {
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-slate-400 mb-1">
+            <label htmlFor="password" className="text-[16px] font-medium text-text">
               Password
             </label>
             <input
+              id="password"
               type="password"
-              placeholder="••••••••"
+              autoComplete="current-password"
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
                 setError('');
               }}
-              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500"
+              aria-describedby={error ? 'login-error' : undefined}
+              aria-invalid={error ? true : undefined}
+              className={fieldClass}
             />
           </div>
 
-          {error && <p className="text-xs text-red-400 font-medium">{error}</p>}
+          {error && (
+            <p id="login-error" role="alert" className="text-[16px] font-medium text-danger">
+              {error}
+            </p>
+          )}
 
           <button
             type="submit"
-            className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2.5 rounded-lg text-sm transition shadow-lg shadow-indigo-600/20"
+            className="h-12 bg-accent px-8 text-[17px] font-semibold text-on-accent transition-opacity duration-150 hover:opacity-90"
           >
-            Sign In
+            Sign in
           </button>
         </form>
-
-        
       </div>
     </div>
   );

@@ -1,0 +1,19 @@
+app: iotclubwebsite-redesign
+stack: node
+build:
+  dockerfile: Dockerfile
+ports:
+  - container: 3000
+    host: 0
+domains:
+  - demo.openexplorer.xyz
+env:
+  NODE_ENV: production
+health:
+  path: /
+  initial_delay: 3s
+  interval: 5s
+  timeout: 3s
+  retries: 3
+plugins:
+  umami: false

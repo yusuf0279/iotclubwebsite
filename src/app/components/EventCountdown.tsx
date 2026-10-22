@@ -1,337 +1,65 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowRight, Radio } from "lucide-react";
 
+const EVENT_NAME = "Carnival";
+const EVENT_DATE_LABEL = "Wednesday 18 November 2026, 5:00 pm (UAE time)";
+const EVENT_TIMESTAMP = new Date("2026-11-18T17:00:00+04:00").getTime();
 
-const EVENT_DATE = new Date(
-  "2026-11-18T17:00:00+04:00"
-).getTime();
+type Remaining = { days: number; hours: number; minutes: number; seconds: number };
 
-
-// YYYY MM   DD   time   zone
-
-function calculateTime(){
-
-const now = Date.now();
-
-const difference = EVENT_DATE - now;
-
-
-if(difference <= 0){
-return {
-days:0,
-hours:0,
-minutes:0,
-seconds:0
-}
+function remainingUntilEvent(now: number): Remaining {
+  const difference = Math.max(EVENT_TIMESTAMP - now, 0);
+  return {
+    days: Math.floor(difference / 86_400_000),
+    hours: Math.floor((difference / 3_600_000) % 24),
+    minutes: Math.floor((difference / 60_000) % 60),
+    seconds: Math.floor((difference / 1000) % 60),
+  };
 }
 
-
-return {
-
-days:Math.floor(
-difference/(1000*60*60*24)
-),
-
-hours:Math.floor(
-(difference/(1000*60*60))%24
-),
-
-minutes:Math.floor(
-(difference/(1000*60))%60
-),
-
-seconds:Math.floor(
-(difference/1000)%60
-)
-
-}
-
-}
-
-
-
-export default function EventCoutdown(){
-
-const [time,setTime]=useState(calculateTime());
-
-
-useEffect(()=>{
-
-const interval=setInterval(()=>{
-
-setTime(calculateTime());
-
-},1000);
-
-
-return ()=>clearInterval(interval);
-
-
-},[]);
-
-
-
-const values=[
-["DAYS",time.days],
-["HRS",time.hours],
-["MIN",time.minutes],
-["SEC",time.seconds]
-];
-
-
-return (
-
-<section
-className="
-relative
-overflow-hidden
-border-y
-border-cyan-400/20
-bg-[#0e1520]
-"
->
-
-
-{/* background glow */}
-
-<div
-className="
-absolute
-inset-0
-bg-gradient-to-r
-from-cyan-400/10
-via-transparent
-to-cyan-400/10
-"
-/>
-
-
-<div
-className="
-relative
-max-w-7xl
-mx-auto
-px-6
-py-6
-flex
-flex-col
-lg:flex-row
-items-center
-justify-between
-gap-6
-"
->
-
-
-{/* Event info */}
-
-<div
-className="
-flex
-items-center
-gap-4
-"
->
-
-
-<div
-className="
-hidden
-sm:flex
-w-12
-h-12
-rounded-xl
-bg-cyan-400/10
-border
-border-cyan-400/30
-items-center
-justify-center
-"
->
-
-<Radio
-size={24}
-color="#00d4ff"
-/>
-
-</div>
-
-
-
-<div>
-
-
-<p
-className="
-text-cyan-400
-font-mono
-text-xs
-tracking-[0.25em]
-"
->
-UPCOMING EVENT
-</p>
-
-
-<h3
-className="
-text-white
-font-mono
-text-lg
-md:text-xl
-"
->
-
-
-{/* NAME of event*/}
-
-Carnival
-
-
-
-
-</h3>
-
-<div
-className="
-mt-2
-flex
-items-center
-gap-2
-text-gray-400
-font-mono
-text-xs
-"
->
-
-<svg
-xmlns="http://www.w3.org/2000/svg"
-width="14"
-height="14"
-viewBox="0 0 24 24"
-fill="none"
-stroke="#00d4ff"
-strokeWidth="2"
-strokeLinecap="round"
-strokeLinejoin="round"
->
-<path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/>
-<circle cx="12" cy="10" r="3"/>
-</svg>
-
-
-<span>
-AUS Student Center</span>
-
-
-</div>
-
-</div>
-
-
-</div>
-
-
-{/* Countdown */}
-
-<div
-className="
-flex
-items-center
-gap-3
-"
->
-
-
-{
-values.map(([label,value])=>(
-
-<div
-key={label}
-className="
-text-center
-min-w-[55px]
-"
->
-
-<p
-className="
-text-xl
-md:text-2xl
-font-mono
-text-cyan-400
-"
->
-{
-String(value).padStart(2,"0")
-}
-</p>
-
-
-<p
-className="
-text-[10px]
-text-gray-500
-font-mono
-tracking-widest
-"
->
-{label}
-</p>
-
-
-</div>
-
-))
-}
-
-
-
-</div>
-
-
-
-{/* Button */}
-
-<button
-className="
-group
-flex
-items-center
-gap-2
-px-5
-py-2.5
-rounded-lg
-bg-cyan-400
-text-black
-font-mono
-text-sm
-font-bold
-hover:shadow-[0_0_30px_rgba(0,212,255,.5)]
-transition
-"
->
-
-Register
-<ArrowRight
-size={15}
-className="
-group-hover:translate-x-1
-transition
-"
-/>
-
-</button>
-
-
-
-</div>
-
-
-</section>
-
-)
-
+export default function EventCountdown() {
+  // Start empty so the server render and the first client render match.
+  const [remaining, setRemaining] = useState<Remaining | null>(null);
+
+  useEffect(() => {
+    const tick = () => setRemaining(remainingUntilEvent(Date.now()));
+    tick();
+    const interval = setInterval(tick, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const units: [string, number | null][] = [
+    ["Days", remaining?.days ?? null],
+    ["Hours", remaining?.hours ?? null],
+    ["Minutes", remaining?.minutes ?? null],
+    ["Seconds", remaining?.seconds ?? null],
+  ];
+
+  return (
+    <section aria-labelledby="next-event" className="bg-surface">
+      <div className="mx-auto max-w-[1280px] px-5 py-16 md:px-10 md:py-24">
+        <div className="flex flex-wrap items-baseline justify-between gap-x-10 gap-y-2">
+          <h2
+            id="next-event"
+            className="text-[clamp(36px,5vw,72px)] leading-[0.95] text-text"
+          >
+            Next up: {EVENT_NAME}
+          </h2>
+          <p className="text-[18px] text-muted">{EVENT_DATE_LABEL}</p>
+        </div>
+
+        <div className="mt-10 grid grid-cols-4 gap-x-3 md:mt-14 md:gap-x-10">
+          {units.map(([label, value]) => (
+            <div key={label}>
+              <p className="font-display text-[clamp(56px,15vw,224px)] font-extrabold leading-[0.85] tabular-nums text-ember">
+                {value === null ? "--" : String(value).padStart(2, "0")}
+              </p>
+              <p className="mt-3 text-[16px] text-muted">{label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 }
