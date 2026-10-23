@@ -1,9 +1,10 @@
 import Link from "next/link";
+import { Github, Instagram, Linkedin, Mail } from "lucide-react";
 
 const socials = [
-  { label: "Instagram", href: "https://instagram.com/aus_iot" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/company/aus-iot" },
-  { label: "GitHub", href: "https://github.com/IotClubAUS" },
+  { label: "Instagram", href: "https://instagram.com/aus_iot", Icon: Instagram },
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/aus-iot", Icon: Linkedin },
+  { label: "GitHub", href: "https://github.com/IotClubAUS", Icon: Github },
 ];
 
 const pages = [
@@ -17,7 +18,7 @@ const pages = [
 export default function Footer() {
   return (
     <footer className="mt-40 bg-surface">
-      <div className="mx-auto max-w-[1280px] px-5 pt-16 md:px-10">
+      <div className="mx-auto max-w-[1280px] px-5 pb-16 pt-16 md:px-10">
         <div className="grid gap-12 md:grid-cols-[1.3fr_1fr_1fr]">
           <p className="max-w-sm text-[19px] leading-[1.5] text-text">
             A student community building connected devices, one sensor at a time.
@@ -38,22 +39,21 @@ export default function Footer() {
 
           <div>
             <h2 className="font-body text-[13px] font-medium normal-case tracking-[0.06em] text-muted">Reach us</h2>
-            <ul className="mt-4 flex flex-col gap-2 text-[17px]">
-              <li>
-                <a href="mailto:iotclub@aus.edu" className="text-text hover:text-accent">
-                  iotclub@aus.edu
-                </a>
-              </li>
-              {socials.map((item) => (
-                <li key={item.href}>
+            <a href="mailto:iotclub@aus.edu" className="mt-4 flex items-center gap-3 text-[17px] text-text hover:text-accent">
+              <Mail size={20} aria-hidden="true" />
+              iotclub@aus.edu
+            </a>
+            <ul className="mt-5 flex gap-3">
+              {socials.map(({ label, href, Icon }) => (
+                <li key={href}>
                   <a
-                    href={item.href}
+                    href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-text hover:text-accent"
+                    aria-label={`${label} (opens in a new tab)`}
+                    className="flex h-11 w-11 items-center justify-center border border-control text-text transition-colors duration-150 hover:border-accent hover:text-accent"
                   >
-                    {item.label}
-                    <span className="sr-only"> (opens in a new tab)</span>
+                    <Icon size={20} aria-hidden="true" />
                   </a>
                 </li>
               ))}
@@ -62,12 +62,6 @@ export default function Footer() {
           </div>
         </div>
 
-        <p
-          aria-hidden="true"
-          className="mt-20 select-none font-display text-[clamp(72px,19vw,288px)] font-extrabold uppercase leading-[0.82] text-surface-2"
-        >
-          IoT Club
-        </p>
       </div>
 
       <div className="border-t border-divider">

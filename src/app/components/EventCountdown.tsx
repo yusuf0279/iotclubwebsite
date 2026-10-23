@@ -42,7 +42,7 @@ export default function EventCountdown() {
         <div className="flex flex-wrap items-baseline justify-between gap-x-10 gap-y-2">
           <h2
             id="next-event"
-            className="text-[clamp(36px,5vw,72px)] leading-[0.95] text-text"
+            className="text-[clamp(31px,4.2vw,61px)] leading-[0.95] text-text"
           >
             Next up: {EVENT_NAME}
           </h2>
@@ -52,7 +52,7 @@ export default function EventCountdown() {
         <div className="mt-10 grid grid-cols-4 gap-x-3 md:mt-14 md:gap-x-10">
           {units.map(([label, value]) => (
             <div key={label}>
-              <p className="font-display text-[clamp(56px,15vw,224px)] font-extrabold leading-[0.85] tabular-nums text-ember">
+              <p className="font-display text-[clamp(48px,12.8vw,190px)] font-extrabold leading-[0.85] tabular-nums text-ember">
                 {value === null ? "--" : String(value).padStart(2, "0")}
               </p>
               <p className="mt-3 text-[16px] text-muted">{label}</p>

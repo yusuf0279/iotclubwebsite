@@ -39,7 +39,7 @@ export default function AboutPage() {
     <>
       {/* HERO: type over a triptych of photos */}
       <section className="mx-auto max-w-[1280px] px-5 pt-10 md:px-10 md:pt-14">
-        <h1 className="text-[clamp(56px,13vw,200px)] leading-[0.9] text-text">About the club</h1>
+        <h1 className="text-[clamp(48px,11vw,170px)] leading-[0.9] text-text">About the club</h1>
         <div className="mt-8 grid grid-cols-3 gap-2 md:mt-12 md:gap-5">
           {triptych.map((photo, index) => (
             <Reveal key={photo.src} delay={index * 0.06} y={32}>
@@ -74,19 +74,19 @@ export default function AboutPage() {
 
       {/* GROUPS */}
       <section aria-labelledby="groups" className="mx-auto max-w-[1280px] px-5 pt-28 md:px-10 md:pt-44">
-        <h2 id="groups" className="text-[clamp(20px,2vw,26px)] font-semibold normal-case tracking-normal text-muted">
+        <h2 id="groups" className="text-[clamp(17px,1.7vw,22px)] font-semibold normal-case tracking-normal text-muted">
           How the club is organised
         </h2>
-        <ul className="mt-6 flex flex-wrap gap-x-[0.35em] gap-y-0 font-display text-[clamp(44px,8.4vw,128px)] font-extrabold uppercase leading-[0.98] text-text">
+        <ul className="mt-8 flex flex-col font-display text-[clamp(32px,5.6vw,80px)] font-extrabold uppercase leading-[1.05] text-text">
           {roles.map((role, index) => (
-            <li key={role}>
+            <li
+              key={role}
+              className="flex items-baseline gap-4 border-t border-divider py-3 last:border-b md:gap-8 md:py-4"
+            >
+              <span aria-hidden="true" className="w-[2ch] shrink-0 text-[0.4em] text-accent">
+                {String(index + 1).padStart(2, "0")}
+              </span>
               {role}
-              {index < roles.length - 1 && (
-                <span aria-hidden="true" className="text-accent">
-                  {" "}
-                  /
-                </span>
-              )}
             </li>
           ))}
         </ul>
@@ -101,10 +101,10 @@ export default function AboutPage() {
       <section aria-labelledby="history" className="mx-auto max-w-[1280px] px-5 pt-28 md:px-10 md:pt-44">
         <div className="grid gap-10 md:grid-cols-[1fr_2fr] md:gap-16">
           <div>
-            <h2 id="history" className="text-[clamp(20px,2vw,26px)] font-semibold normal-case tracking-normal text-muted">
+            <h2 id="history" className="text-[clamp(17px,1.7vw,22px)] font-semibold normal-case tracking-normal text-muted">
               Since launch
             </h2>
-            <p className="mt-3 font-display text-[clamp(96px,17vw,260px)] font-extrabold leading-[0.85] text-accent md:sticky md:top-10">
+            <p className="mt-3 font-display text-[clamp(82px,14.4vw,221px)] font-extrabold leading-[0.85] text-accent md:sticky md:top-10">
               2026
             </p>
           </div>
@@ -118,7 +118,7 @@ export default function AboutPage() {
                   </time>
                   <Link
                     href={`/news/${item.id}`}
-                    className="mt-2 block font-display text-[clamp(32px,4.4vw,64px)] font-extrabold uppercase leading-[0.98] text-text hover:text-accent"
+                    className="mt-2 block font-display text-[clamp(27px,3.7vw,54px)] font-extrabold uppercase leading-[0.98] text-text hover:text-accent"
                   >
                     {item.title.trim()}
                   </Link>

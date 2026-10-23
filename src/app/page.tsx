@@ -38,7 +38,7 @@ export default function HomePage() {
     <>
       {/* HERO: display type over a wide photo stage */}
       <section className="mx-auto max-w-[1280px] px-5 pt-10 md:px-10 md:pt-14">
-        <h1 className="text-[clamp(44px,9.4vw,148px)] leading-[0.92] text-text">
+        <h1 className="text-[clamp(37px,8vw,126px)] leading-[0.92] text-text">
           Students building connected systems
         </h1>
 
@@ -59,8 +59,8 @@ export default function HomePage() {
         </div>
 
         <Image
-          src="/media/gallery/iot-photo-3.jpg"
-          alt="Club members working together at a table with laptops and electronics"
+          src="/media/gallery/club-fair.jpg"
+          alt="A laptop, wired electronics and a toolbox on the club's table at a campus fair"
           width={4000}
           height={2252}
           priority
@@ -76,7 +76,7 @@ export default function HomePage() {
       {/* FOCUS AREAS */}
       <section className="mx-auto max-w-[1280px] px-5 pt-28 md:px-10 md:pt-44">
         <Reveal>
-          <h2 className="text-[clamp(20px,2vw,26px)] font-semibold normal-case tracking-normal text-muted">
+          <h2 className="text-[clamp(17px,1.7vw,22px)] font-semibold normal-case tracking-normal text-muted">
             What we work on
           </h2>
         </Reveal>
@@ -127,7 +127,7 @@ export default function HomePage() {
       <section className="mx-auto max-w-[1280px] px-5 pt-28 md:px-10 md:pt-44">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <Reveal>
-            <h2 className="text-[clamp(44px,7vw,104px)] leading-[0.92] text-text">Latest</h2>
+            <h2 className="text-[clamp(37px,6vw,88px)] leading-[0.92] text-text">Latest</h2>
           </Reveal>
           <Link href="/news" className="pb-2 text-[18px] font-semibold text-accent hover:underline">
             All news and events
@@ -158,7 +158,7 @@ export default function HomePage() {
                   </p>
                   <p
                     className={`mt-1 font-display font-extrabold uppercase leading-[1] text-text group-hover:text-accent ${
-                      index === 0 ? "text-[clamp(28px,3.4vw,48px)]" : "text-[clamp(22px,2.2vw,30px)]"
+                      index === 0 ? "text-[clamp(24px,2.9vw,41px)]" : "text-[clamp(19px,1.9vw,26px)]"
                     }`}
                   >
                     {item.title.trim()}
@@ -173,7 +173,7 @@ export default function HomePage() {
       {/* JOIN: a typographic call to action */}
       <section className="mx-auto max-w-[1280px] px-5 pt-32 md:px-10 md:pt-52">
         <Link href="/contact" className="group block">
-          <span className="block font-display text-[clamp(64px,17vw,260px)] font-extrabold uppercase leading-[0.85] text-text transition-colors duration-150 group-hover:text-accent">
+          <span className="block font-display text-[clamp(54px,14.4vw,221px)] font-extrabold uppercase leading-[0.85] text-text transition-colors duration-150 group-hover:text-accent">
             Join us
           </span>
         </Link>

@@ -14,7 +14,7 @@ export default function MediaPage() {
   return (
     <div className="mx-auto max-w-[1280px] px-5 pb-8 pt-10 md:px-10 md:pt-14">
       <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-4">
-        <h1 className="text-[clamp(72px,16vw,240px)] leading-[0.85] text-text">Media</h1>
+        <h1 className="text-[clamp(61px,13.6vw,204px)] leading-[0.85] text-text">Media</h1>
         <p className="max-w-sm pb-2 text-[18px] leading-[1.5] text-muted">
           Workshops, the club fair and campus demonstrations. Select a photo to view it full size.
         </p>

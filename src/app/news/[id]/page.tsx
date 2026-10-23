@@ -48,7 +48,7 @@ export default async function NewsDetailPage({ params }: Params) {
           <p className="text-[16px] font-medium text-accent">
             {item.tag} · {formatNewsDate(item.date)} · {item.readTime}
           </p>
-          <h1 className="mt-4 text-[clamp(48px,8vw,128px)] leading-[0.92] text-text">
+          <h1 className="mt-4 text-[clamp(41px,6.8vw,109px)] leading-[0.92] text-text">
             {item.title.trim()}
           </h1>
           {description && (

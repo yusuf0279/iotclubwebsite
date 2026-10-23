@@ -64,33 +64,22 @@ export default function TeamPage() {
     });
   };
 
-  // Each member appears once. Anyone in the executive group is listed there first.
-  const executives = team.filter((member) => inGroup(member, "Executives"));
-  const others = roles
-    .filter((role) => role !== "Executives")
-    .map((role) => ({
-      role,
-      members: team.filter((member) => !inGroup(member, "Executives") && inGroup(member, role)),
-    }))
-    .filter((group) => group.members.length > 0);
-
-  const showExecutives = activeRole === "All" || activeRole === "Executives";
-  const visibleOthers = others.filter((group) => activeRole === "All" || group.role === activeRole);
-  // A filtered committee also lists its executive coordinators, who are shown under Executives.
-  const filteredExecutives =
-    activeRole === "All" || activeRole === "Executives"
-      ? executives
-      : executives.filter((member) => inGroup(member, activeRole));
+  // One list, filtered by group. Executives and coordinators come first, then the rest in data order.
+  const visible = team.filter((member) => activeRole === "All" || inGroup(member, activeRole));
+  const ordered = [
+    ...visible.filter((member) => inGroup(member, "Executives")),
+    ...visible.filter((member) => !inGroup(member, "Executives")),
+  ];
 
   return (
     <>
       {/* HERO: the member count at poster size beside a photo */}
       <section className="mx-auto grid max-w-[1280px] gap-8 px-5 pt-10 md:grid-cols-[7fr_5fr] md:items-end md:gap-12 md:px-10 md:pt-14">
         <div>
-          <h1 className="text-[clamp(56px,9vw,136px)] leading-[0.9] text-text">Team</h1>
+          <h1 className="text-[clamp(48px,7.6vw,116px)] leading-[0.9] text-text">Team</h1>
           <p
             aria-label={`${team.length} members`}
-            className="mt-6 font-display text-[clamp(140px,28vw,400px)] font-extrabold leading-[0.85] text-accent md:mt-8"
+            className="mt-6 font-display text-[clamp(119px,23.8vw,340px)] font-extrabold leading-[0.85] text-accent md:mt-8"
           >
             {team.length}
           </p>
@@ -133,56 +122,13 @@ export default function TeamPage() {
           })}
         </div>
 
-        {/* EXECUTIVES: large portraits with bios */}
-        {(showExecutives || filteredExecutives.length > 0) && filteredExecutives.length > 0 && (
-          <section aria-labelledby="executives" className="mt-12">
-            <h2 id="executives" className="text-[clamp(44px,7vw,104px)] leading-[0.92] text-text">
-              {showExecutives ? "Executives" : `${activeRole} coordinators`}
-            </h2>
-            <ul className="mt-10 grid grid-cols-2 gap-x-5 gap-y-14 md:grid-cols-3 md:gap-x-8">
-              {filteredExecutives.map((member, index) => (
-                <li key={member.id}>
-                  <Reveal delay={(index % 3) * 0.06} y={24}>
-                    <button
-                      type="button"
-                      tabIndex={-1}
-                      aria-hidden="true"
-                      onClick={() => handleSecretClick(member.id)}
-                      className="block w-full cursor-default"
-                    >
-                      <Image
-                        src={member.img}
-                        alt=""
-                        width={700}
-                        height={875}
-                        sizes="(min-width: 768px) 380px, 50vw"
-                        className="aspect-[4/5] w-full bg-surface object-cover"
-                      />
-                    </button>
-                    <h3 className="mt-4 text-[clamp(24px,2.6vw,34px)] leading-[1] text-text">
-                      {member.name}
-                    </h3>
-                    <p className="mt-1 text-[16px] font-medium text-accent">{member.role}</p>
-                    <p className="mt-3 hidden text-[16px] leading-[1.55] text-muted md:block">
-                      {member.bio}
-                    </p>
-                    <Links member={member} />
-                  </Reveal>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
-
-        {/* COMMITTEES: compact listings */}
-        {visibleOthers.map((group) => (
-          <section key={group.role} aria-labelledby={`group-${group.role}`} className="mt-24 md:mt-32">
-            <h2 id={`group-${group.role}`} className="text-[clamp(44px,7vw,104px)] leading-[0.92] text-text">
-              {group.role}
-            </h2>
-            <ul className="mt-8 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-4 md:gap-x-6">
-              {group.members.map((member) => (
-                <li key={member.id}>
+        {/* ONE LIST: coordinators and executives first, then everyone else */}
+        <ul className="mt-12 grid grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-4 md:gap-x-6">
+          {ordered.map((member, index) => {
+            const bio = member.bio.trim();
+            return (
+              <li key={member.id}>
+                <Reveal delay={(index % 4) * 0.05} y={24}>
                   <button
                     type="button"
                     tabIndex={-1}
@@ -193,26 +139,26 @@ export default function TeamPage() {
                     <Image
                       src={member.img}
                       alt=""
-                      width={400}
-                      height={500}
+                      width={500}
+                      height={625}
                       sizes="(min-width: 768px) 280px, 50vw"
                       className="aspect-[4/5] w-full bg-surface object-cover"
                     />
                   </button>
                   <h3 className="mt-3 text-[22px] leading-[1.05] text-text">{member.name}</h3>
                   <p className="mt-1 text-[16px] font-medium text-accent">{member.role}</p>
-                  <p className="mt-1 text-[16px] text-muted">{member.skills.join(" · ")}</p>
+                  {bio && <p className="mt-2 text-[16px] leading-[1.55] text-muted">{bio}</p>}
                   <Links member={member} />
-                </li>
-              ))}
-            </ul>
-          </section>
-        ))}
+                </Reveal>
+              </li>
+            );
+          })}
+        </ul>
 
         {/* ADVISOR */}
         {advisors.length > 0 && activeRole === "All" && (
           <section aria-labelledby="advisors" className="mt-28 md:mt-40">
-            <h2 id="advisors" className="text-[clamp(44px,7vw,104px)] leading-[0.92] text-text">
+            <h2 id="advisors" className="text-[clamp(37px,6vw,88px)] leading-[0.92] text-text">
               Faculty advisor
             </h2>
             <ul className="mt-8 flex flex-col gap-8">

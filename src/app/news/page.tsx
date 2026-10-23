@@ -19,7 +19,7 @@ export default function NewsPage() {
 
   return (
     <div className="mx-auto max-w-[1280px] px-5 pb-8 pt-10 md:px-10 md:pt-14">
-      <h1 className="text-[clamp(56px,12vw,176px)] leading-[0.9] text-text">News and events</h1>
+      <h1 className="text-[clamp(48px,10.2vw,150px)] leading-[0.9] text-text">News and events</h1>
 
       <div
         role="group"
@@ -99,7 +99,7 @@ export default function NewsPage() {
                   <div>
                     <Link
                       href={`/news/${item.id}`}
-                      className="block font-display text-[clamp(36px,6vw,88px)] font-extrabold uppercase leading-[0.95] text-text hover:text-accent"
+                      className="block font-display text-[clamp(31px,5.1vw,75px)] font-extrabold uppercase leading-[0.95] text-text hover:text-accent"
                     >
                       {item.title.trim()}
                     </Link>

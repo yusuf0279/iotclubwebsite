@@ -36,7 +36,7 @@ export default function AuthGate({ onLogin }: AuthGateProps) {
   };
 
   return (
-    <div className="mx-auto grid min-h-[calc(100vh-3.5rem)] max-w-[1280px] gap-10 px-5 pb-16 pt-10 md:grid-cols-[1fr_1fr] md:items-center md:gap-16 md:px-10 lg:min-h-screen">
+    <div className="mx-auto grid min-h-[calc(100vh-3.5rem)] md:min-h-[calc(100vh-4rem)] max-w-[1280px] gap-10 px-5 pb-16 pt-10 md:grid-cols-[1fr_1fr] md:items-center md:gap-16 md:px-10">
       {/* Visual: the club mark on the club grid */}
       <div
         aria-hidden="true"
@@ -51,7 +51,7 @@ export default function AuthGate({ onLogin }: AuthGateProps) {
       </div>
 
       <div>
-        <h1 className="text-[clamp(56px,8vw,120px)] leading-[0.9] text-text">Committee sign in</h1>
+        <h1 className="text-[clamp(48px,6.8vw,102px)] leading-[0.9] text-text">Committee sign in</h1>
         <p className="mt-6 max-w-md text-[18px] leading-[1.5] text-muted">
           Sign in with your committee account to see tasks and points.
         </p>

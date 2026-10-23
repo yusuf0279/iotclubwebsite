@@ -75,7 +75,7 @@ export default function RootLayout({
           <div className="flex min-h-screen flex-col">
             <Navbar />
 
-            <div className="flex flex-1 flex-col lg:pl-[80px]">
+            <div className="flex flex-1 flex-col">
               <main id="content" className="flex-1">
                 {children}
               </main>

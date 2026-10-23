@@ -45,34 +45,17 @@ export default function Navbar() {
         Skip to content
       </a>
 
-      <header className="sticky top-0 z-40 border-b border-divider bg-bg lg:fixed lg:inset-y-0 lg:left-0 lg:w-[80px] lg:border-b-0 lg:border-r">
-        {/* Mobile bar */}
-        <div className="flex h-14 items-center justify-between px-5 lg:hidden">
+      <header className="sticky top-0 z-40 border-b border-divider bg-bg">
+        <div className="mx-auto flex h-14 max-w-[1280px] items-center justify-between gap-8 px-5 md:h-16 md:px-10">
           <Link href="/" className="flex items-center gap-3 text-accent" aria-label="IoT Club, home">
             <IotMark className="h-8 w-8" />
-            <span className="font-display text-[22px] font-extrabold uppercase leading-none text-text">
+            <span className="font-display text-[20px] font-extrabold uppercase leading-none text-text">
               IoT Club
             </span>
           </Link>
-          <button
-            type="button"
-            aria-expanded={menuOpen}
-            aria-controls="site-menu"
-            onClick={() => setMenuOpen((open) => !open)}
-            className="h-11 px-2 font-display text-[20px] font-bold uppercase text-text"
-          >
-            {menuOpen ? "Close" : "Menu"}
-          </button>
-        </div>
 
-        {/* Desktop spine */}
-        <div className="hidden h-full flex-col items-center justify-between py-6 lg:flex">
-          <Link href="/" aria-label="IoT Club, home" className="text-accent">
-            <IotMark className="h-10 w-10" />
-          </Link>
-
-          <nav aria-label="Main">
-            <ul className="flex flex-col items-center gap-7">
+          <nav aria-label="Main" className="hidden lg:block">
+            <ul className="flex items-center gap-8">
               {links.map((link) => {
                 const active = isActive(pathname, link.href);
                 return (
@@ -80,9 +63,10 @@ export default function Navbar() {
                     <Link
                       href={link.href}
                       aria-current={active ? "page" : undefined}
-                      style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
-                      className={`block font-display text-[22px] font-bold uppercase leading-none tracking-[0.02em] transition-colors duration-150 ${
-                        active ? "text-accent" : "text-muted hover:text-text"
+                      className={`block py-2 font-display text-[18px] font-bold uppercase leading-none tracking-[0.04em] transition-colors duration-150 ${
+                        active
+                          ? "text-accent underline decoration-2 underline-offset-[10px]"
+                          : "text-muted hover:text-text"
                       }`}
                     >
                       {link.label}
@@ -95,11 +79,20 @@ export default function Navbar() {
 
           <Link
             href="/contact"
-            style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
-            className="bg-accent px-3 py-4 font-display text-[22px] font-extrabold uppercase leading-none tracking-[0.02em] text-on-accent transition-opacity duration-150 hover:opacity-90"
+            className="hidden bg-accent px-5 py-2.5 font-display text-[18px] font-extrabold uppercase leading-none tracking-[0.04em] text-on-accent transition-opacity duration-150 hover:opacity-90 lg:block"
           >
             Join
           </Link>
+
+          <button
+            type="button"
+            aria-expanded={menuOpen}
+            aria-controls="site-menu"
+            onClick={() => setMenuOpen((open) => !open)}
+            className="h-11 px-2 font-display text-[20px] font-bold uppercase text-text lg:hidden"
+          >
+            {menuOpen ? "Close" : "Menu"}
+          </button>
         </div>
       </header>
 
@@ -126,7 +119,7 @@ export default function Navbar() {
                   <Link
                     href={link.href}
                     aria-current={active ? "page" : undefined}
-                    className={`block font-display text-[64px] font-extrabold uppercase leading-[0.95] ${
+                    className={`block font-display text-[52px] font-extrabold uppercase leading-[0.95] ${
                       active ? "text-accent" : "text-text"
                     }`}
                   >
